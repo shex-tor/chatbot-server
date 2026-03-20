@@ -2,12 +2,6 @@
 
 const knowledge = require("./knowledge.json");
 
-// ── Pre-process all intents at startup ────────────────────────────────────────
-const intents = knowledge.intents.map(intent => ({
-  ...intent,
-  normPatterns: intent.patterns.map(p => normalise(p))
-}));
-
 // ── Normalise text ─────────────────────────────────────────────────────────────
 function normalise(text) {
   return text
@@ -35,7 +29,13 @@ function meaningful(tokens) {
   return tokens.filter(t => !STOPWORDS.has(t) && t.length > 1);
 }
 
-// ── Pick a random response from an array ──────────────────────────────────────
+// ── Pre-process all intents AFTER normalise is defined ────────────────────────
+const intents = knowledge.intents.map(intent => ({
+  ...intent,
+  normPatterns: intent.patterns.map(p => normalise(p))
+}));
+
+// ── Pick a random response ─────────────────────────────────────────────────────
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -45,16 +45,10 @@ function scoreIntent(queryTokens, queryNorm, intent) {
   let best = 0;
 
   for (const pattern of intent.normPatterns) {
-    // Exact match
-    if (queryNorm === pattern) return 100;
-
-    // Query contains the full pattern
+    if (queryNorm === pattern)       return 100;
     if (queryNorm.includes(pattern)) { best = Math.max(best, 90); continue; }
-
-    // Pattern contains the full query
     if (pattern.includes(queryNorm)) { best = Math.max(best, 75); continue; }
 
-    // Token overlap score
     const patternTokens   = meaningful(pattern.split(" "));
     const queryMeaningful = meaningful(queryTokens);
     if (patternTokens.length === 0 || queryMeaningful.length === 0) continue;
@@ -76,7 +70,7 @@ function scoreIntent(queryTokens, queryNorm, intent) {
   return best;
 }
 
-// ── Context: track last intent per session ────────────────────────────────────
+// ── Session context ────────────────────────────────────────────────────────────
 const sessions = new Map();
 
 function getCtx(sid) {
@@ -88,7 +82,7 @@ function setCtx(sid, ctx) {
   if (sessions.size > 1000) sessions.delete(sessions.keys().next().value);
 }
 
-// ── Fallback responses for truly unknown input ────────────────────────────────
+// ── Fallback responses ─────────────────────────────────────────────────────────
 const FALLBACKS = [
   "That's interesting! Tell me more about that.",
   "I'm not quite sure I follow — could you tell me more?",
@@ -101,12 +95,11 @@ const FALLBACKS = [
 
 // ── Main respond function ──────────────────────────────────────────────────────
 function respond(userMessage, sessionId) {
-  const sid        = sessionId || "default";
-  const ctx        = getCtx(sid);
-  const norm       = normalise(userMessage);
-  const tokens     = tokenise(norm);
+  const sid    = sessionId || "default";
+  const ctx    = getCtx(sid);
+  const norm   = normalise(userMessage);
+  const tokens = tokenise(norm);
 
-  // Score every intent
   const scored = intents
     .map(intent => ({ intent, score: scoreIntent(tokens, norm, intent) }))
     .filter(x => x.score >= 30)
@@ -116,17 +109,14 @@ function respond(userMessage, sessionId) {
   let tag = null;
 
   if (scored.length > 0) {
-    const best = scored[0];
-    tag = best.intent.tag;
-
-    // Avoid repeating exact same response twice in a row
+    const best       = scored[0];
+    tag              = best.intent.tag;
     const candidates = best.intent.responses.filter(r => r !== ctx.lastResponse);
-    const pool = candidates.length > 0 ? candidates : best.intent.responses;
-    response = pick(pool);
+    const pool       = candidates.length > 0 ? candidates : best.intent.responses;
+    response         = pick(pool);
   } else {
-    // Fallback — avoid repeating last fallback
     const candidates = FALLBACKS.filter(r => r !== ctx.lastResponse);
-    response = pick(candidates.length > 0 ? candidates : FALLBACKS);
+    response         = pick(candidates.length > 0 ? candidates : FALLBACKS);
   }
 
   setCtx(sid, { lastTag: tag, lastResponse: response });
