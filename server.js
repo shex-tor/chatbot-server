@@ -6,8 +6,8 @@ const app     = express();
 const PORT    = process.env.PORT || 3000;
 
 // ── Keys (server-side only) ───────────────────────────────────────────────────
-const GOOGLE_API_KEY    = "AIzaSyCG5X4B--Gekf8Mj7Ab8VURAqztzrxHxDY";
-const GOOGLE_CX         = "a3350befb25e14f1f";
+const GOOGLE_API_KEY    = "AIzaSyBXxA5Hfzg133nyttEqQNCnZsBgGktMA8I";
+const GOOGLE_CX         = "a1a963603bf46435a";
 const GOOGLE_SEARCH_URL = "https://www.googleapis.com/customsearch/v1";
 
 // ── Google Custom Search ───────────────────────────────────────────────────────
