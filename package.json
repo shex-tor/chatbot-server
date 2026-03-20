@@ -1,7 +1,7 @@
 {
   "name": "venaura",
   "version": "1.0.0",
-  "description": "Venaura AI Chatbot — powered by Gemini Flash",
+  "description": "Venaura AI — 100% self-contained, no external APIs",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
