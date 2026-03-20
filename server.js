@@ -5,9 +5,75 @@ const path    = require("path");
 const app     = express();
 const PORT    = process.env.PORT || 3000;
 
-// ── Serper API key (server-side only) ─────────────────────────────────────────
+// ── API Keys (server-side only, never exposed to frontend) ────────────────────
 const SERPER_API_KEY = "5a43cb9dbe3553f4f3586bc34803728c979530de";
 const SERPER_URL     = "https://google.serper.dev/search";
+
+const HF_TOKEN       = "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";
+const HF_MODEL       = "mistralai/Mistral-7B-Instruct-v0.3";
+const HF_API_URL     = `https://api-inference.huggingface.co/models/${HF_MODEL}`;
+
+// ── Venaura system personality ─────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are Venaura, a smart, friendly, and helpful AI assistant (version 1.0). 
+You respond naturally and conversationally. You are concise but thorough.
+When given web search results, you summarise them clearly in your own words and add helpful context.
+Never just copy-paste raw results. Always respond as a knowledgeable, friendly assistant.`;
+
+// ── Call Hugging Face Inference API ───────────────────────────────────────────
+async function callHuggingFace(prompt) {
+  console.log("[HF] Calling model:", HF_MODEL);
+
+  const res = await fetch(HF_API_URL, {
+    method:  "POST",
+    headers: {
+      "Authorization": `Bearer ${HF_TOKEN}`,
+      "Content-Type":  "application/json",
+      "x-wait-for-model": "true"  // wait if model is loading instead of erroring
+    },
+    body: JSON.stringify({
+      inputs: prompt,
+      parameters: {
+        max_new_tokens:  512,
+        temperature:     0.7,
+        top_p:           0.9,
+        do_sample:       true,
+        return_full_text: false  // only return generated text, not the input
+      }
+    })
+  });
+
+  const data = await res.json();
+  console.log("[HF] Status:", res.status);
+
+  if (!res.ok) {
+    // Model may be loading — return a friendly message
+    if (res.status === 503) {
+      throw new Error("Model is warming up. Please try again in a few seconds.");
+    }
+    throw new Error(data.error || `HF API error: ${res.status}`);
+  }
+
+  // Extract generated text
+  if (Array.isArray(data) && data[0]?.generated_text) {
+    return data[0].generated_text.trim();
+  }
+
+  if (data.generated_text) {
+    return data.generated_text.trim();
+  }
+
+  throw new Error("No text returned from model");
+}
+
+// ── Format prompt for Mistral instruct format ─────────────────────────────────
+function buildChatPrompt(userMessage) {
+  return `<s>[INST] ${SYSTEM_PROMPT}\n\nUser: ${userMessage} [/INST]`;
+}
+
+// ── Format prompt when web search results are available ───────────────────────
+function buildSearchPrompt(userMessage, searchContext) {
+  return `<s>[INST] ${SYSTEM_PROMPT}\n\nThe user asked: "${userMessage}"\n\nHere are web search results to help answer:\n${searchContext}\n\nBased on these results, give a helpful, natural response. [/INST]`;
+}
 
 // ── Clean natural language into a search query ────────────────────────────────
 function toSearchQuery(text) {
@@ -20,77 +86,22 @@ function toSearchQuery(text) {
     .trim() || text.trim();
 }
 
-// ── Format raw Serper results into a clean natural response ───────────────────
-function formatResults(query, data) {
-  const parts = [];
-
-  // 1. Direct answer box
-  if (data.answerBox) {
-    const ab = data.answerBox;
-    const answer = ab.answer || ab.snippet || "";
-    if (answer) {
-      parts.push(`Here's what I found about **${query}**:\n\n${answer}`);
-      if (ab.snippetHighlighted?.length) {
-        parts.push(ab.snippetHighlighted.join(" • "));
-      }
-    }
-  }
-
-  // 2. Knowledge graph — rich summary
-  if (data.knowledgeGraph) {
-    const kg = data.knowledgeGraph;
-    let summary = "";
-    if (kg.title)       summary += `**${kg.title}**`;
-    if (kg.type)        summary += ` *(${kg.type})*`;
-    if (kg.description) summary += `\n\n${kg.description}`;
-    if (kg.attributes && Object.keys(kg.attributes).length > 0) {
-      const attrs = Object.entries(kg.attributes)
-        .slice(0, 5)
-        .map(([k, v]) => `- **${k}:** ${v}`)
-        .join("\n");
-      summary += `\n\n${attrs}`;
-    }
-    if (summary) parts.push(summary);
-  }
-
-  // 3. News results
-  if (data.news && data.news.length > 0) {
-    const intro = parts.length === 0
-      ? `Here are the latest results for **${query}**:\n\n`
-      : "\n\n**Latest news:**\n\n";
-    const news = data.news.slice(0, 3).map(n => {
-      const date = n.date ? ` *(${n.date})*` : "";
-      const snippet = n.snippet ? `\n${n.snippet}` : "";
-      return `**${n.title}**${date}${snippet}\n[Read more](${n.link})`;
-    });
-    parts.push(intro + news.join("\n\n"));
-  }
-
-  // 4. Organic results — only if nothing better found
-  if (parts.length === 0 && data.organic && data.organic.length > 0) {
-    const intro = `Here's what I found for **${query}**:\n\n`;
-    const results = data.organic.slice(0, 3).map(r => {
-      const snippet = r.snippet?.replace(/\n/g, " ").trim() || "";
-      return `**${r.title}**\n${snippet}\n[Read more](${r.link})`;
-    });
-    parts.push(intro + results.join("\n\n"));
-  }
-
-  // 5. Related searches hint
-  if (data.relatedSearches && data.relatedSearches.length > 0 && parts.length > 0) {
-    const related = data.relatedSearches.slice(0, 3).map(r => `*${r.query}*`).join(", ");
-    parts.push(`\n**Related:** ${related}`);
-  }
-
-  if (parts.length === 0) {
-    return `I searched for **"${query}"** but couldn't find relevant results. Try rephrasing your question.`;
-  }
-
-  return parts.join("\n\n");
+// ── Detect if message needs web search ───────────────────────────────────────
+function needsWebSearch(text) {
+  const norm = text.toLowerCase();
+  const searchTriggers = [
+    /^what is\b/, /^what are\b/, /^who is\b/, /^who was\b/,
+    /^when is\b/, /^when did\b/, /^where is\b/, /^how does\b/,
+    /^how do\b/,  /^why is\b/,   /^why does\b/, /^explain\b/,
+    /^define\b/,  /^tell me about\b/, /^search\b/, /^find\b/,
+    /\bnews\b/,   /\blatest\b/,  /\bcurrent\b/, /\bprice\b/,
+    /\bweather\b/,/\bwho won\b/, /\bwhat happened\b/, /\brecent\b/
+  ];
+  return searchTriggers.some(p => p.test(norm));
 }
 
-// ── Search the web via Serper ──────────────────────────────────────────────────
-async function searchWeb(query) {
+// ── Fetch raw search results from Serper ─────────────────────────────────────
+async function fetchSearchResults(query) {
   const searchQuery = toSearchQuery(query);
   console.log("[Serper] Query:", searchQuery);
 
@@ -101,14 +112,60 @@ async function searchWeb(query) {
   });
 
   const data = await res.json();
-  console.log("[Serper] Status:", res.status);
+  if (!res.ok) throw new Error(`Serper error: ${data.message || res.status}`);
 
-  if (!res.ok) {
-    console.error("[Serper Error]", JSON.stringify(data));
-    return `Search error: ${data.message || "Unknown error"}`;
+  const context = [];
+
+  if (data.answerBox) {
+    const ab = data.answerBox;
+    if (ab.answer)  context.push(`Direct answer: ${ab.answer}`);
+    if (ab.snippet) context.push(`Detail: ${ab.snippet}`);
   }
 
-  return formatResults(searchQuery, data);
+  if (data.knowledgeGraph) {
+    const kg = data.knowledgeGraph;
+    if (kg.title)       context.push(`Topic: ${kg.title}${kg.type ? ` (${kg.type})` : ""}`);
+    if (kg.description) context.push(`Description: ${kg.description}`);
+    if (kg.attributes) {
+      Object.entries(kg.attributes).slice(0, 4).forEach(([k, v]) => {
+        context.push(`${k}: ${v}`);
+      });
+    }
+  }
+
+  if (data.news && data.news.length > 0) {
+    data.news.slice(0, 3).forEach(n => {
+      context.push(`News: "${n.title}"${n.date ? ` (${n.date})` : ""} — ${n.snippet || ""}`);
+    });
+  }
+
+  if (data.organic && data.organic.length > 0) {
+    data.organic.slice(0, 3).forEach(r => {
+      context.push(`Result: "${r.title}" — ${r.snippet?.replace(/\n/g, " ") || ""}`);
+    });
+  }
+
+  return context.join("\n");
+}
+
+// ── Main response pipeline ────────────────────────────────────────────────────
+async function getResponse(userMessage, useSearch) {
+  let prompt;
+
+  if (useSearch) {
+    // Fetch web results then compose AI response with them
+    try {
+      const searchContext = await fetchSearchResults(userMessage);
+      prompt = buildSearchPrompt(userMessage, searchContext);
+    } catch (err) {
+      console.error("[Search failed, falling back to plain AI]", err.message);
+      prompt = buildChatPrompt(userMessage);
+    }
+  } else {
+    prompt = buildChatPrompt(userMessage);
+  }
+
+  return await callHuggingFace(prompt);
 }
 
 // ── CORS ───────────────────────────────────────────────────────────────────────
@@ -126,7 +183,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ── Health check ───────────────────────────────────────────────────────────────
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", engine: "Venaura v1.0 — Serper + Brain" });
+  res.json({ status: "ok", engine: `Venaura v1.0 — HF ${HF_MODEL} + Serper` });
 });
 
 // ── POST /api/chat ─────────────────────────────────────────────────────────────
@@ -134,27 +191,29 @@ app.post("/api/chat", async (req, res) => {
   const { messages, mode, prompt, files } = req.body;
 
   try {
-    // ── Vision mode — file analysis (brain-based description) ────────────────
+    // ── Vision mode — file upload ────────────────────────────────────────────
     if (mode === "vision") {
       if (!files || files.length === 0) {
         return res.status(400).json({ error: "No files provided." });
       }
-      // Without Gemini, we describe what was received
-      const fileList = files.map(f => {
-        const isImage = f.mediaType?.startsWith("image/");
-        return isImage
-          ? `an image file (${f.name || "image"})`
-          : `a document file (${f.name || "file"})`;
-      }).join(" and ");
+      const fileList = files.map(f =>
+        f.mediaType?.startsWith("image/")
+          ? `an image (${f.name || "image"})`
+          : `a document (${f.name || "file"})`
+      ).join(" and ");
 
-      const reply = prompt
-        ? `I received ${fileList}. Unfortunately, file analysis requires the Vision API which is currently unavailable. You can describe the file contents and I'll help you with your question: **"${prompt}"**`
-        : `I received ${fileList}. File analysis requires the Vision API which is currently unavailable. Please describe what's in the file and I'll help you!`;
+      // Ask HF to analyse the file description + user prompt
+      const visionPrompt = buildChatPrompt(
+        prompt
+          ? `The user uploaded ${fileList} and asks: "${prompt}". Respond helpfully.`
+          : `The user uploaded ${fileList}. Acknowledge it and ask what they'd like to know about it.`
+      );
 
+      const reply = await callHuggingFace(visionPrompt);
       return res.json({ reply });
     }
 
-    // ── Search mode ───────────────────────────────────────────────────────────
+    // ── Chat / Search mode ───────────────────────────────────────────────────
     if (!Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ error: "'messages' array is required." });
     }
@@ -164,8 +223,16 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Last message must be a user message with text." });
     }
 
-    console.log(`[Chat] User asked: "${last.text}"`);
-    const reply = await searchWeb(last.text.trim());
+    const userMessage = last.text.trim();
+    console.log(`[Chat] User: "${userMessage}"`);
+
+    // Decide whether to search the web first
+    const useSearch = needsWebSearch(userMessage);
+    console.log(`[Chat] Mode: ${useSearch ? "Search + AI" : "AI only"}`);
+
+    const reply = await getResponse(userMessage, useSearch);
+    console.log(`[Chat] Reply: "${reply.slice(0, 80)}..."`);
+
     return res.json({ reply });
 
   } catch (err) {
@@ -181,6 +248,7 @@ app.get("*", (_req, res) => {
 
 // ── Listen on 0.0.0.0 so Render detects the port ─────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
-  console.log("✦ Venaura v1.0 — Serper + Brain");
-  console.log(`  Port: ${PORT}`);
+  console.log("✦ Venaura v1.0 — Hugging Face AI + Serper Search");
+  console.log(`  Model: ${HF_MODEL}`);
+  console.log(`  Port:  ${PORT}`);
 });
