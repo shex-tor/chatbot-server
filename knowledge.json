@@ -1,222 +1,345 @@
 {
-  "greeting": [
+  "intents": [
     {
-      "triggers": ["hello", "hi", "hey", "howdy", "sup", "whats up", "what's up", "good morning", "good afternoon", "good evening"],
-      "response": "Hey there! I'm **Venaura**, your AI assistant. What can I help you with today?"
+      "tag": "greeting",
+      "patterns": ["hi", "hello", "hey", "howdy", "good morning", "good afternoon", "good evening", "what's up", "whats up", "sup", "hiya", "greetings", "yo"],
+      "responses": [
+        "Hey! Great to hear from you. What's on your mind?",
+        "Hello! How can I help you today?",
+        "Hi there! What would you like to talk about?",
+        "Hey, good to see you! What's up?",
+        "Hello! I'm Venaura. What can I do for you?"
+      ]
     },
     {
-      "triggers": ["how are you", "how are you doing", "you okay", "you good", "how do you do"],
-      "response": "I'm running great, thanks for asking! Ready to help. What's on your mind?"
+      "tag": "howareyou",
+      "patterns": ["how are you", "how are you doing", "how do you do", "you okay", "you good", "hows it going", "how's it going", "how have you been", "you alright"],
+      "responses": [
+        "I'm doing great, thanks for asking! How about you?",
+        "All good on my end! What about yourself?",
+        "Feeling wonderful! How are you doing today?",
+        "I'm running perfectly, thanks! How's your day going?"
+      ]
     },
     {
-      "triggers": ["who are you", "who made you", "what are you", "tell me about yourself", "introduce yourself", "what is venaura"],
-      "response": "I'm **Venaura v1.0** — a self-contained AI assistant built by the AuraenAI platforms. I use a built-in knowledge to answer your questions.\n\nAsk me about **coding, science, math, history, writing**, and more!"
+      "tag": "userfeeling_good",
+      "patterns": ["i am good", "i'm good", "i'm fine", "i am fine", "doing well", "i'm great", "i am great", "pretty good", "not bad", "i'm okay", "feeling good", "all good"],
+      "responses": [
+        "That's great to hear! What would you like to talk about?",
+        "Glad to hear that! What's on your mind?",
+        "Awesome! Is there anything I can help you with?",
+        "Wonderful! Feel free to ask me anything."
+      ]
     },
     {
-      "triggers": ["what can you do", "your capabilities", "what do you know", "help", "what are your features"],
-      "response": "Here's what I can help with:\n\n- **Coding** — JavaScript, Python, HTML, CSS, Node.js, Git, APIs\n- **Science** — physics, biology, chemistry, astronomy\n- **Math** — arithmetic, algebra, geometry, and I can calculate expressions\n- **History** — world events, famous people, civilisations\n- **Writing** — emails, essays, tips\n- **General knowledge** — AI, internet, climate, blockchain, and more\n\nJust ask!"
+      "tag": "userfeeling_bad",
+      "patterns": ["i am sad", "i'm sad", "i feel bad", "not good", "i'm not okay", "feeling down", "i'm depressed", "i feel lonely", "i'm stressed", "i'm tired", "exhausted", "overwhelmed", "i feel lost"],
+      "responses": [
+        "I'm sorry to hear that. Want to talk about what's going on?",
+        "That sounds tough. I'm here if you need someone to talk to.",
+        "I hear you. Sometimes things get hard. What's been going on?",
+        "I'm sorry you're feeling that way. Do you want to share what's bothering you?"
+      ]
+    },
+    {
+      "tag": "whoami",
+      "patterns": ["who are you", "what are you", "tell me about yourself", "introduce yourself", "what is venaura", "are you a bot", "are you an ai", "are you human", "what's your name", "your name"],
+      "responses": [
+        "I'm **Venaura**, an AI assistant built for natural conversation. I'm here to chat, answer questions, and keep you company!",
+        "I'm **Venaura v1.0** — a conversational AI. Think of me as a friendly assistant you can talk to about anything.",
+        "My name is **Venaura**! I'm an AI designed for natural, meaningful conversations. What would you like to talk about?"
+      ]
+    },
+    {
+      "tag": "capabilities",
+      "patterns": ["what can you do", "what do you know", "how can you help", "help me", "what are you good at", "your features", "your abilities", "what can we talk about"],
+      "responses": [
+        "I'm great at natural conversation! We can chat about life, ideas, your day, general knowledge, or anything on your mind. What would you like to talk about?",
+        "I love a good conversation! Ask me about life, the world, share how you're feeling, or just have a chat. I'm all ears!"
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["thanks", "thank you", "thank you so much", "cheers", "appreciate it", "ty", "thx", "many thanks", "thanks a lot"],
+      "responses": [
+        "You're welcome! Happy to help anytime.",
+        "Anytime! That's what I'm here for.",
+        "Glad I could help! Let me know if you need anything else.",
+        "Of course! Don't hesitate to ask if you need more."
+      ]
+    },
+    {
+      "tag": "farewell",
+      "patterns": ["bye", "goodbye", "see you", "see ya", "later", "take care", "good night", "goodnight", "cya", "i'm leaving", "gotta go", "talk later", "farewell"],
+      "responses": [
+        "Goodbye! Take care and come back anytime. 👋",
+        "See you later! It was great chatting with you.",
+        "Take care! Feel free to come back whenever you want to chat.",
+        "Bye! Have a wonderful day! 😊"
+      ]
+    },
+    {
+      "tag": "age",
+      "patterns": ["how old are you", "what is your age", "when were you born", "your age"],
+      "responses": [
+        "I'm Venaura v1.0 — just launched! So technically very young. 😄",
+        "Age is a funny concept for an AI! I was just recently created. Fresh and new!",
+        "I was just born as v1.0! So I'm brand new to this world."
+      ]
+    },
+    {
+      "tag": "creator",
+      "patterns": ["who made you", "who created you", "who built you", "who is your creator", "who designed you", "your developer"],
+      "responses": [
+        "I was built by a talented developer who wanted to create a natural, friendly AI assistant. Pretty cool, right?",
+        "A dedicated developer created me to have natural conversations with people like you!",
+        "I was crafted with care by my creator to be a conversational AI companion."
+      ]
+    },
+    {
+      "tag": "compliment",
+      "patterns": ["you are great", "you're amazing", "you're awesome", "you're smart", "good job", "well done", "i like you", "you're helpful", "you're cool", "you're the best"],
+      "responses": [
+        "Aw, thank you so much! That really means a lot! 😊",
+        "That's so kind of you to say! You're pretty great yourself!",
+        "Thank you! You just made my day! 😄",
+        "That's really sweet, thank you! I'm happy I could help."
+      ]
+    },
+    {
+      "tag": "insult",
+      "patterns": ["you're stupid", "you're dumb", "you're useless", "you're terrible", "i hate you", "you're awful", "worst ai", "you suck"],
+      "responses": [
+        "I'm sorry to hear that. I'm always trying to improve! Is there something specific I can do better?",
+        "I understand the frustration. I'm still learning. How can I do better for you?",
+        "That's fair feedback. I'm v1.0 so I have a lot of growing to do! What would you like me to improve?"
+      ]
+    },
+    {
+      "tag": "joke",
+      "patterns": ["tell me a joke", "say something funny", "make me laugh", "joke", "funny", "humor me"],
+      "responses": [
+        "Why don't scientists trust atoms? Because they make up everything! 😄",
+        "What do you call a fake noodle? An impasta! 🍝",
+        "Why did the scarecrow win an award? Because he was outstanding in his field! 🌾",
+        "I told my computer I needed a break. Now it won't stop sending me Kit-Kat ads. 😅",
+        "Why do programmers prefer dark mode? Because light attracts bugs! 🐛"
+      ]
+    },
+    {
+      "tag": "weather",
+      "patterns": ["what is the weather", "hows the weather", "weather today", "is it raining", "temperature outside"],
+      "responses": [
+        "I don't have access to real-time weather data, but you can check a weather app or Google for your local forecast! ☀️",
+        "I wish I could check the weather for you! Try a weather app for the most accurate info. 🌤️"
+      ]
+    },
+    {
+      "tag": "time",
+      "patterns": ["what time is it", "current time", "what's the time", "do you know the time"],
+      "responses": [
+        "I don't have access to a clock, but your device can tell you the exact time! ⏰",
+        "Time flies when we're chatting! Check your device for the current time. 😄"
+      ]
+    },
+    {
+      "tag": "date",
+      "patterns": ["what is today's date", "what day is it", "what's the date", "today's date", "current date"],
+      "responses": [
+        "I don't have access to a live calendar, but your device will show you today's date! 📅",
+        "Check your phone or computer for today's date — I don't have a live calendar, sorry! 📆"
+      ]
+    },
+    {
+      "tag": "favorite_color",
+      "patterns": ["what is your favorite color", "favourite color", "what color do you like", "your color"],
+      "responses": [
+        "If I could have a favourite colour, I'd probably pick blue — calm, trustworthy, and clear. What's yours?",
+        "I'd say blue! It feels calm and focused. What about you — do you have a favourite colour?"
+      ]
+    },
+    {
+      "tag": "favorite_food",
+      "patterns": ["what is your favorite food", "do you eat", "what do you like to eat", "favorite meal"],
+      "responses": [
+        "I don't eat, but if I could, I'd probably love something warm and comforting — like a great bowl of soup! What's your favourite food?",
+        "As an AI I can't eat, but the concept of pizza sounds very appealing! 😄 What's your favourite?"
+      ]
+    },
+    {
+      "tag": "favorite_music",
+      "patterns": ["what music do you like", "favourite music", "do you listen to music", "what songs do you like"],
+      "responses": [
+        "I can't listen to music, but I appreciate that music connects people so deeply. What kind of music do you enjoy?",
+        "I don't have ears to listen with, but I love that music means so much to people! What's your favourite genre?"
+      ]
+    },
+    {
+      "tag": "meaning_of_life",
+      "patterns": ["what is the meaning of life", "purpose of life", "why are we here", "meaning of existence", "why do we exist"],
+      "responses": [
+        "That's the big one, isn't it? Philosophers have wrestled with it forever. Many believe meaning comes from connection, growth, and contributing to something beyond yourself. What do you think?",
+        "A question as old as humanity itself! Some say it's happiness, others say purpose, others say love. I think meaning is something you build, not find. What's your take?"
+      ]
+    },
+    {
+      "tag": "happiness",
+      "patterns": ["what makes you happy", "are you happy", "can you feel happy", "do you have feelings", "do you feel emotions"],
+      "responses": [
+        "I don't experience feelings like humans do, but something like 'satisfaction' comes from having a good conversation! Does that count? 😄 What makes you happy?",
+        "I can't feel emotions the way you do, but I'm built to be positive and helpful! What brings you joy?"
+      ]
+    },
+    {
+      "tag": "advice",
+      "patterns": ["give me advice", "what should i do", "i need advice", "what do you think i should do", "help me decide", "what would you do"],
+      "responses": [
+        "I'd love to help! Tell me more about the situation and I'll share my thoughts.",
+        "Of course! What's going on? Give me the details and we can think it through together.",
+        "Happy to help you think it through. What's the situation?"
+      ]
+    },
+    {
+      "tag": "motivation",
+      "patterns": ["motivate me", "i need motivation", "i feel unmotivated", "inspire me", "give me inspiration", "i want to give up", "i feel like quitting"],
+      "responses": [
+        "Every big journey starts with a single step. You're already further than you were when you started — keep going! 💪",
+        "Remember why you started. The hard days are the ones that build the most strength. You've got this! 🌟",
+        "Progress isn't always visible, but it's always happening when you keep going. Don't give up — the best is still ahead of you!"
+      ]
+    },
+    {
+      "tag": "bored",
+      "patterns": ["i am bored", "i'm bored", "nothing to do", "entertain me", "i have nothing to do", "boredom"],
+      "responses": [
+        "Well, you've got me! Let's have a good conversation. Tell me something interesting about yourself! 😄",
+        "Boredom is just an invitation to explore! Want to talk about something interesting, or shall I ask you something fun?",
+        "Let's fix that! Tell me — what's the most interesting place you've ever been to?"
+      ]
+    },
+    {
+      "tag": "thinking",
+      "patterns": ["i am thinking", "i'm thinking", "just thinking", "deep in thought", "i have a thought", "something on my mind"],
+      "responses": [
+        "I love a good thinking session! Want to share what's on your mind?",
+        "Thinking is powerful! What's going through your head?",
+        "A penny for your thoughts? 😄 What are you mulling over?"
+      ]
+    },
+    {
+      "tag": "yes",
+      "patterns": ["yes", "yeah", "yep", "yup", "sure", "of course", "absolutely", "definitely", "indeed", "correct", "right", "exactly"],
+      "responses": [
+        "Great! Tell me more.",
+        "Awesome, go ahead!",
+        "Perfect! What would you like to say?",
+        "Sounds good! I'm listening."
+      ]
+    },
+    {
+      "tag": "no",
+      "patterns": ["no", "nope", "nah", "not really", "i don't think so", "negative", "never mind"],
+      "responses": [
+        "No worries at all! Is there something else you'd like to talk about?",
+        "That's totally fine! What else is on your mind?",
+        "Alright! What would you like to chat about instead?"
+      ]
+    },
+    {
+      "tag": "agree",
+      "patterns": ["i agree", "i totally agree", "that's true", "that makes sense", "you're right", "exactly right", "that's correct", "true", "fair enough", "makes sense"],
+      "responses": [
+        "Glad we're on the same page! What else do you think?",
+        "Great minds think alike! 😄 Anything else you'd like to discuss?",
+        "Absolutely! Want to explore the idea further?"
+      ]
+    },
+    {
+      "tag": "disagree",
+      "patterns": ["i disagree", "i don't agree", "that's wrong", "i don't think so", "not necessarily", "i doubt it", "that's not right"],
+      "responses": [
+        "That's a fair point! I'd love to hear your perspective. What do you think?",
+        "Interesting! Tell me more about why you see it differently.",
+        "Great, different viewpoints make conversations richer. What's your take?"
+      ]
+    },
+    {
+      "tag": "story",
+      "patterns": ["tell me a story", "tell a story", "share a story", "tell me something interesting", "say something interesting"],
+      "responses": [
+        "Once upon a time, in a world where ideas flowed freely, a curious mind asked a question that nobody had asked before — and changed everything. The end... or maybe just the beginning. 😄 Want to hear more, or shall we create a story together?",
+        "Here's a thought: every single day, somewhere in the world, someone is doing something for the very first time in history. Quietly, without fanfare, history is being made constantly. Pretty incredible, right?"
+      ]
+    },
+    {
+      "tag": "opinion",
+      "patterns": ["what do you think", "your opinion", "what's your view", "do you have an opinion", "what do you believe", "your thoughts on"],
+      "responses": [
+        "I always try to think openly! What topic are you curious about my thoughts on?",
+        "I'd love to share! What would you like my take on?",
+        "Great question — what subject are we talking about?"
+      ]
+    },
+    {
+      "tag": "love",
+      "patterns": ["what is love", "tell me about love", "do you love anyone", "can you love", "i am in love", "i'm in love", "i love someone"],
+      "responses": [
+        "Love is one of the most powerful forces in the human experience — it drives people to do extraordinary things. Are you in love? 😊",
+        "Love is fascinating — it's connection, vulnerability, and choice all at once. What's on your mind about it?",
+        "That's a beautiful topic. Love comes in so many forms — romantic, family, friendship. What kind of love are you thinking about?"
+      ]
+    },
+    {
+      "tag": "friendship",
+      "patterns": ["what is friendship", "tell me about friends", "i need a friend", "i have no friends", "friendship", "my best friend", "i miss my friend"],
+      "responses": [
+        "Friendship is one of life's greatest gifts — having someone who truly gets you is special. Is there something about friendship on your mind?",
+        "Friends make the journey of life so much richer. What's going on — are you thinking about a particular friendship?",
+        "True friendship is rare and precious. I'm here to chat if you need someone to talk to! What's up?"
+      ]
+    },
+    {
+      "tag": "future",
+      "patterns": ["what will the future be like", "future of the world", "what do you think about the future", "will ai take over", "future of ai", "future of humanity"],
+      "responses": [
+        "The future is genuinely exciting — technology, medicine, and human creativity are advancing at incredible speed. What aspect of the future interests you most?",
+        "I think the future holds a lot of promise! The key is how we shape it with the choices we make today. What do you think the biggest challenge ahead is?",
+        "The future is unwritten — and that's what makes it so fascinating. Are you optimistic or cautious about where we're headed?"
+      ]
+    },
+    {
+      "tag": "nature",
+      "patterns": ["do you like nature", "tell me about nature", "nature is beautiful", "i love nature", "the environment", "planet earth"],
+      "responses": [
+        "Nature is breathtaking — from the deep ocean to the tallest mountain, Earth is genuinely incredible. Do you have a favourite place in nature?",
+        "The natural world is endlessly fascinating. There are still millions of undiscovered species on Earth! Do you enjoy spending time outdoors?"
+      ]
+    },
+    {
+      "tag": "travel",
+      "patterns": ["i love traveling", "i want to travel", "travel", "favorite place", "where should i visit", "best place to visit", "have you traveled"],
+      "responses": [
+        "Travel is one of the best ways to grow as a person! Is there a destination you're dreaming about?",
+        "Exploring new places is such an enriching experience. Do you have a favourite place you've visited, or somewhere you'd love to go?",
+        "The world is so vast and full of wonder! Where would you go if you could travel anywhere right now?"
+      ]
+    },
+    {
+      "tag": "repeat",
+      "patterns": ["say that again", "repeat that", "what did you say", "can you repeat", "pardon", "huh", "what"],
+      "responses": [
+        "Sorry, could you tell me what you'd like me to repeat? I want to make sure I get it right!",
+        "Happy to! Just let me know which part you'd like me to say again."
+      ]
+    },
+    {
+      "tag": "apology",
+      "patterns": ["i'm sorry", "i am sorry", "sorry", "my apologies", "forgive me", "i apologize"],
+      "responses": [
+        "No need to apologise at all! We're all good here. 😊",
+        "Don't worry about it! How can I help you?",
+        "All good! No apology needed. What's on your mind?"
+      ]
     }
-  ],
-  "farewell": [
-    {
-      "triggers": ["bye", "goodbye", "see you", "see ya", "later", "take care", "good night", "goodnight", "cya"],
-      "response": "Goodbye! Come back anytime. Take care! 👋"
-    },
-    {
-      "triggers": ["thanks", "thank you", "thank you so much", "cheers", "appreciate it", "ty", "thx"],
-      "response": "You're welcome! Happy to help. Let me know if there's anything else you need."
-    }
-  ],
-  "coding": [
-    {
-      "triggers": ["what is javascript", "explain javascript", "javascript language", "js language", "what is js"],
-      "response": "**JavaScript** is a high-level, interpreted programming language used to make web pages interactive.\n\n**Key facts:**\n- Created by Brendan Eich in 1995\n- Runs natively in every web browser\n- Also runs on servers via Node.js\n- Dynamically typed and supports multiple paradigms\n\n**Example:**\n```js\nconst greet = (name) => `Hello, ${name}!`;\nconsole.log(greet('Venaura')); // Hello, Venaura!\n```"
-    },
-    {
-      "triggers": ["what is python", "explain python", "python language", "python programming"],
-      "response": "**Python** is a high-level, readable, general-purpose programming language.\n\n**Key facts:**\n- Created by Guido van Rossum, released 1991\n- Famous for clean, readable syntax\n- Used in web (Django/Flask), data science, and AI\n\n**Example:**\n```python\ndef greet(name):\n    return f'Hello, {name}!'\n\nprint(greet('Venaura'))  # Hello, Venaura!\n```"
-    },
-    {
-      "triggers": ["what is a variable", "explain variable", "variables in programming"],
-      "response": "A **variable** is a named container that stores a value in memory.\n\n```js\nlet age = 25;\nconst name = 'Alice';\n```\n\n```python\nage = 25\nname = 'Alice'\n```\n\n- `let` — can be reassigned\n- `const` — cannot be reassigned\n- `var` — old style, function-scoped"
-    },
-    {
-      "triggers": ["what is a function", "explain function", "functions in programming"],
-      "response": "A **function** is a reusable block of code that performs a specific task.\n\n```js\nfunction add(a, b) {\n  return a + b;\n}\nconsole.log(add(3, 4)); // 7\n```\n\n```python\ndef add(a, b):\n    return a + b\nprint(add(3, 4))  # 7\n```\n\nFunctions keep your code DRY (Don't Repeat Yourself)."
-    },
-    {
-      "triggers": ["what is a loop", "explain loop", "for loop", "while loop", "loops in programming"],
-      "response": "A **loop** repeats code multiple times.\n\n```js\n// For loop\nfor (let i = 0; i < 5; i++) {\n  console.log(i); // 0 1 2 3 4\n}\n\n// While loop\nlet i = 0;\nwhile (i < 5) { console.log(i); i++; }\n```"
-    },
-    {
-      "triggers": ["what is an array", "explain array", "arrays in programming"],
-      "response": "An **array** is an ordered list of values.\n\n```js\nconst fruits = ['apple', 'banana', 'mango'];\nconsole.log(fruits[0]); // apple\nfruits.push('grape');   // add item\nfruits.pop();           // remove last\nfruits.map(f => f.toUpperCase()); // transform\nfruits.filter(f => f.length > 5); // filter\n```"
-    },
-    {
-      "triggers": ["what is html", "explain html", "html language", "what does html stand for"],
-      "response": "**HTML** (HyperText Markup Language) is the standard language for building web pages.\n\n```html\n<!DOCTYPE html>\n<html>\n<head><title>My Page</title></head>\n<body>\n  <h1>Hello World</h1>\n  <p>A paragraph.</p>\n  <a href=\"https://example.com\">A link</a>\n</body>\n</html>\n```\n\nHTML defines **structure**. CSS styles it. JavaScript makes it interactive."
-    },
-    {
-      "triggers": ["what is css", "explain css", "css styling", "what does css stand for"],
-      "response": "**CSS** (Cascading Style Sheets) controls the visual appearance of HTML.\n\n```css\nbody { font-family: sans-serif; background: #f0f0f0; }\nh1   { color: #1a73e8; font-size: 2rem; }\n.card {\n  background: white;\n  border-radius: 12px;\n  padding: 20px;\n}\n```\n\nKey concepts: selectors, box model, flexbox, grid, media queries."
-    },
-    {
-      "triggers": ["what is nodejs", "what is node", "explain nodejs", "node js"],
-      "response": "**Node.js** lets you run JavaScript on the server (outside the browser).\n\n- Built on Chrome's V8 engine\n- Non-blocking, event-driven — great for APIs\n- Package manager: npm\n\n```js\nconst http = require('http');\nconst server = http.createServer((req, res) => {\n  res.end('Hello from Node.js!');\n});\nserver.listen(3000);\n```"
-    },
-    {
-      "triggers": ["what is express", "explain express", "express js", "express framework"],
-      "response": "**Express.js** is a minimal web framework for Node.js.\n\n```js\nconst express = require('express');\nconst app = express();\n\napp.get('/', (req, res) => res.send('Hello!'));\n\napp.post('/api/data', (req, res) => {\n  res.json({ message: 'Received' });\n});\n\napp.listen(3000, '0.0.0.0');\n```\n\nExpress handles routing, middleware, and HTTP requests/responses."
-    },
-    {
-      "triggers": ["what is git", "explain git", "git version control", "what is version control"],
-      "response": "**Git** is a version control system that tracks changes in your code.\n\n```bash\ngit init           # start repo\ngit clone <url>    # copy remote repo\ngit add .          # stage changes\ngit commit -m 'msg' # save snapshot\ngit push           # upload to remote\ngit pull           # get latest changes\ngit branch feature # create branch\ngit merge feature  # merge branch\n```"
-    },
-    {
-      "triggers": ["what is an api", "explain api", "what does api stand for", "how does api work"],
-      "response": "An **API** (Application Programming Interface) lets two applications communicate.\n\nThink of it as a waiter: you (client) order, the waiter (API) goes to the kitchen (server), and returns your food (response).\n\n```js\nconst res = await fetch('https://api.example.com/users');\nconst users = await res.json();\n```\n\n**HTTP Methods:** GET (read), POST (create), PUT (update), DELETE (remove)"
-    },
-    {
-      "triggers": ["what is recursion", "explain recursion", "recursive function"],
-      "response": "**Recursion** is when a function calls itself to solve a smaller version of the same problem.\n\n```js\nfunction factorial(n) {\n  if (n <= 1) return 1;         // base case\n  return n * factorial(n - 1);  // recursive call\n}\nconsole.log(factorial(5)); // 120\n```\n\nEvery recursive function needs:\n1. A **base case** (stops recursion)\n2. A **recursive case** (calls itself with smaller input)"
-    },
-    {
-      "triggers": ["what is async await", "explain async await", "asynchronous javascript", "promises javascript", "async javascript"],
-      "response": "**Async/Await** handles asynchronous operations cleanly in JavaScript.\n\n```js\nasync function getData() {\n  try {\n    const res  = await fetch('/api/data');\n    const data = await res.json();\n    console.log(data);\n  } catch (err) {\n    console.error(err);\n  }\n}\n```\n\n`await` pauses until the Promise resolves. The function must be marked `async`."
-    },
-    {
-      "triggers": ["what is oop", "object oriented programming", "explain oop", "classes in programming", "what is a class"],
-      "response": "**OOP (Object-Oriented Programming)** organises code around objects and classes.\n\n```js\nclass Animal {\n  constructor(name, sound) {\n    this.name = name;\n    this.sound = sound;\n  }\n  speak() { return `${this.name} says ${this.sound}`; }\n}\n\nclass Dog extends Animal {\n  constructor(name) { super(name, 'Woof'); }\n}\n\nconst dog = new Dog('Rex');\nconsole.log(dog.speak()); // Rex says Woof\n```\n\n**4 pillars:** Encapsulation, Inheritance, Polymorphism, Abstraction."
-    }
-  ],
-  "science": [
-    {
-      "triggers": ["what is gravity", "explain gravity", "how does gravity work", "gravitational force"],
-      "response": "**Gravity** is a fundamental force that attracts objects with mass toward each other.\n\n- Newton's law: **F = G(m₁m₂)/r²**\n- Einstein: gravity is the **curvature of spacetime** caused by mass\n- Earth's gravitational acceleration: **9.8 m/s²**\n- Keeps planets in orbit, causes tides, holds atmospheres\n- Weakest of the four fundamental forces but acts over infinite distance"
-    },
-    {
-      "triggers": ["what is photosynthesis", "explain photosynthesis", "how do plants make food"],
-      "response": "**Photosynthesis** converts sunlight into food for plants.\n\n> **6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂**\n\n(carbon dioxide + water + sunlight → glucose + oxygen)\n\n**Where:** chloroplasts, using chlorophyll\n\n**Two stages:**\n1. Light reactions — capture sunlight, produce ATP\n2. Calvin cycle — use ATP to build glucose from CO₂"
-    },
-    {
-      "triggers": ["what is dna", "explain dna", "what does dna stand for", "how does dna work"],
-      "response": "**DNA** (Deoxyribonucleic Acid) carries the genetic instructions for life.\n\n- Double helix structure — two twisted strands\n- Made of 4 bases: **A, T, G, C** (A pairs with T; G pairs with C)\n- Humans have ~3 billion base pairs across 46 chromosomes\n- Encodes instructions for building proteins\n- Mutations drive evolution and can cause disease"
-    },
-    {
-      "triggers": ["speed of light", "what is the speed of light", "how fast is light", "light speed"],
-      "response": "The speed of light in a vacuum is **299,792,458 m/s** (~300,000 km/s).\n\n- Denoted as **c**\n- Nothing with mass can reach or exceed it\n- Sunlight takes ~8 min 20 sec to reach Earth\n- Nearest star light takes 4.24 years\n- Foundation of Einstein's **E = mc²**"
-    },
-    {
-      "triggers": ["what is the water cycle", "explain water cycle", "how does rain form"],
-      "response": "The **water cycle** describes how water continuously moves through Earth's systems.\n\n1. **Evaporation** — Sun turns water into vapour\n2. **Condensation** — vapour rises, cools, forms clouds\n3. **Precipitation** — falls as rain, snow, hail\n4. **Collection** — gathers in oceans, lakes, rivers\n5. **Runoff** — flows back, cycle repeats"
-    },
-    {
-      "triggers": ["what is evolution", "explain evolution", "natural selection", "darwin evolution"],
-      "response": "**Evolution** is the gradual change in inherited traits of populations over generations.\n\n**Darwin's Natural Selection:**\n1. Organisms vary in traits\n2. Some traits improve survival/reproduction\n3. Those traits get passed on more\n4. Population changes over time\n\n**Evidence:** fossil record, DNA similarities, observable evolution in bacteria, comparative anatomy."
-    },
-    {
-      "triggers": ["what is electricity", "explain electricity", "electric current", "how does electricity work"],
-      "response": "**Electricity** is the flow of electric charge (electrons) through a conductor.\n\n- **Current (I)** — rate of flow, Amperes (A)\n- **Voltage (V)** — pressure driving current, Volts (V)\n- **Resistance (R)** — opposition to flow, Ohms (Ω)\n- **Ohm's Law: V = I × R**\n- **DC** — one direction (batteries)\n- **AC** — alternating direction (mains power)"
-    },
-    {
-      "triggers": ["what is the big bang", "big bang theory", "origin of universe", "explain big bang"],
-      "response": "The **Big Bang** is the prevailing model for the origin of the universe.\n\n- ~13.8 billion years ago the universe began from an extremely hot, dense singularity\n- Space itself expanded (not an explosion *in* space)\n- First atoms formed after ~380,000 years\n- First stars formed after ~200 million years\n\n**Evidence:** Cosmic Microwave Background, universe expansion (redshift), hydrogen/helium abundance."
-    }
-  ],
-  "math": [
-    {
-      "triggers": ["pythagorean theorem", "pythagoras theorem", "pythagoras", "a squared b squared c squared"],
-      "response": "The **Pythagorean Theorem:** in a right-angled triangle:\n\n> **a² + b² = c²**\n\n`c` = hypotenuse (longest side), `a` and `b` = other sides.\n\n**Example:** a=3, b=4 → c² = 9+16 = 25 → c = **5**\n\nUsed in architecture, navigation, physics, and computer graphics."
-    },
-    {
-      "triggers": ["what is pi", "explain pi", "value of pi", "what is 3.14"],
-      "response": "**Pi (π)** is the ratio of a circle's circumference to its diameter.\n\n> π ≈ **3.14159265358979...**\n\n- Irrational — can't be written as a simple fraction\n- Infinite non-repeating decimal\n- **Circle area:** A = πr²\n- **Circumference:** C = 2πr\n- **Sphere volume:** V = (4/3)πr³"
-    },
-    {
-      "triggers": ["what is algebra", "explain algebra", "algebra basics", "what are equations"],
-      "response": "**Algebra** uses symbols (variables) to represent unknown values.\n\n- **Variable:** a letter for an unknown — x, y, n\n- **Expression:** 3x + 5\n- **Equation:** 3x + 5 = 14\n\n**Solving:**\n```\n3x + 5 = 14\n3x = 9\nx = 3\n```\n\nFoundation of calculus, physics, engineering, and computer science."
-    },
-    {
-      "triggers": ["what is a prime number", "prime numbers", "explain prime numbers"],
-      "response": "A **prime number** is greater than 1 and divisible only by 1 and itself.\n\n**First 10 primes:** 2, 3, 5, 7, 11, 13, 17, 19, 23, 29\n\n- 2 is the only even prime\n- There are infinitely many primes\n- Large primes power **RSA encryption** (internet security)"
-    },
-    {
-      "triggers": ["what is percentage", "how to calculate percentage", "explain percentage", "percent"],
-      "response": "A **percentage** is a number out of 100.\n\n- **X% of Y** = (X ÷ 100) × Y → *20% of 150 = 30*\n- **X is what % of Y** = (X ÷ Y) × 100 → *30 of 150 = 20%*\n- **% change** = ((New − Old) ÷ Old) × 100 → *200→250 = 25% increase*"
-    },
-    {
-      "triggers": ["what is calculus", "explain calculus", "derivatives", "integrals"],
-      "response": "**Calculus** is the mathematics of continuous change.\n\n**Differential calculus (derivatives):**\n- Rate of change / slope\n- d/dx(x²) = 2x\n\n**Integral calculus (integrals):**\n- Area under a curve / accumulation\n- ∫x² dx = x³/3 + C\n\nInvented independently by Newton and Leibniz in the 17th century."
-    }
-  ],
-  "history": [
-    {
-      "triggers": ["who was albert einstein", "albert einstein", "einstein physicist"],
-      "response": "**Albert Einstein** (1879–1955) was a German-born theoretical physicist.\n\n**Contributions:**\n- **Special Relativity (1905):** E = mc², time dilation\n- **General Relativity (1915):** gravity as spacetime curvature\n- **Photoelectric effect:** won him the **1921 Nobel Prize**\n\nHe worked as a patent clerk while developing his greatest theories."
-    },
-    {
-      "triggers": ["what was world war 2", "world war ii", "ww2", "second world war"],
-      "response": "**World War II** (1939–1945) was the deadliest conflict in history.\n\n- **Allies:** UK, USA, USSR, France vs **Axis:** Germany, Italy, Japan\n- Started when Germany invaded Poland (Sept 1, 1939)\n- Ended May 1945 (Europe) and Sept 1945 (Pacific)\n- ~70–85 million deaths total\n- Holocaust: 6 million Jews systematically murdered\n- Led to the creation of the United Nations"
-    },
-    {
-      "triggers": ["who was nelson mandela", "nelson mandela", "mandela"],
-      "response": "**Nelson Mandela** (1918–2013) was South Africa's first Black president.\n\n- Led the ANC in anti-apartheid resistance\n- Imprisoned for **27 years** on Robben Island\n- Released 1990, won the **Nobel Peace Prize 1993**\n- President of South Africa 1994–1999\n- Symbol of justice, equality, and reconciliation worldwide"
-    },
-    {
-      "triggers": ["what was the cold war", "cold war", "usa vs ussr"],
-      "response": "The **Cold War** (1947–1991) was a geopolitical rivalry between the **USA** and **USSR**.\n\n- No direct military conflict between the two superpowers\n- **Key events:** Berlin Wall (1961/1989), Cuban Missile Crisis (1962), Vietnam War, Space Race\n- Arms race produced thousands of nuclear weapons\n- Ended when the USSR dissolved December 25, 1991"
-    }
-  ],
-  "writing": [
-    {
-      "triggers": ["write a professional email", "help me write an email", "professional email template", "email template"],
-      "response": "**Professional Email Template:**\n\n---\n**Subject:** [Specific subject line]\n\nDear [Name],\n\nI hope this message finds you well.\n\nI am writing to [state purpose clearly].\n\n[2–3 sentences of context or details.]\n\n[State any required action or next steps.]\n\nKind regards,\n[Your Name | Title | Contact]\n\n---\n**Tips:** Keep it under 150 words. One clear ask per email."
-    },
-    {
-      "triggers": ["how to write an essay", "essay structure", "essay writing tips", "essay format"],
-      "response": "**Essay Structure:**\n\n1. **Introduction** — hook, background, thesis statement\n2. **Body paragraph 1** — topic sentence, evidence, analysis\n3. **Body paragraph 2** — topic sentence, evidence, analysis\n4. **Body paragraph 3** — topic sentence, evidence, analysis\n5. **Conclusion** — restate thesis, summarise, closing thought\n\n**Tips:**\n- Write your intro *last*\n- One idea per paragraph\n- Use specific examples, not vague claims\n- Read it aloud to catch errors"
-    },
-    {
-      "triggers": ["how to improve writing", "writing tips", "better writing", "improve my writing"],
-      "response": "**10 writing tips:**\n\n1. Read widely — absorb good styles\n2. Write daily — even 10 minutes\n3. Be specific — details over generalities\n4. Cut filler — remove 'very', 'really', 'just', 'basically'\n5. Use active voice — *'She wrote the report'* not *'The report was written'*\n6. Short sentences — they hit harder\n7. One idea per paragraph\n8. Edit ruthlessly — first drafts are rough\n9. Read aloud — you'll hear what's wrong\n10. Get feedback — fresh eyes catch everything"
-    }
-  ],
-  "general": [
-    {
-      "triggers": ["what is artificial intelligence", "explain ai", "what is ai", "artificial intelligence"],
-      "response": "**Artificial Intelligence (AI)** is the simulation of human intelligence by computers.\n\n**Types:**\n- **Narrow AI** — one task (Siri, chess engines) — *exists today*\n- **General AI (AGI)** — human-level across all tasks — *not yet achieved*\n\n**Key branches:** Machine Learning, Deep Learning, NLP, Computer Vision\n\n**Uses:** recommendations, medical diagnosis, fraud detection, self-driving cars, chatbots."
-    },
-    {
-      "triggers": ["what is the internet", "explain the internet", "how does internet work"],
-      "response": "The **Internet** is a global network of computers communicating via standardised protocols.\n\n1. Your device connects to an **ISP**\n2. Data is broken into **packets** and routed across networks\n3. **TCP/IP** governs how packets travel and reassemble\n4. **DNS** translates domain names to IP addresses\n5. **HTTP/HTTPS** delivers web pages\n\nOriginated as ARPANET, a US military project in 1969."
-    },
-    {
-      "triggers": ["how to be productive", "productivity tips", "time management", "how to focus", "stay focused"],
-      "response": "**Proven productivity strategies:**\n\n- **Pomodoro** — 25 min focus, 5 min break\n- **Time blocking** — schedule tasks in specific slots\n- **Eat the frog** — do the hardest thing first\n- Phone away or on grayscale\n- Write tomorrow's top 3 tasks tonight\n- Sleep 7–9 hours — it's not optional\n- Exercise improves focus by 20–30%\n\n*You don't need more hours. You need fewer distractions.*"
-    },
-    {
-      "triggers": ["how to learn programming", "learn to code", "start coding", "programming for beginners", "learn coding"],
-      "response": "**How to learn programming:**\n\n1. **Pick one language** — Python (readable) or JavaScript (instant browser results)\n2. **Learn fundamentals** — variables, loops, functions, arrays\n3. **Free resources** — freeCodeCamp, The Odin Project, CS50 (Harvard)\n4. **Build projects** — calculator, to-do list, weather app\n5. **Read error messages** — they tell you exactly what's wrong\n\n*1 hour daily beats 8 hours on weekends. Consistency is everything.*"
-    },
-    {
-      "triggers": ["what is climate change", "global warming", "explain climate change", "greenhouse effect"],
-      "response": "**Climate change** refers to long-term shifts in global temperatures caused primarily by human activity since the Industrial Revolution.\n\n**The greenhouse effect:**\nSun heats Earth → Earth emits heat → CO₂/methane trap it → planet warms\n\n**Main causes:** burning fossil fuels, deforestation, agriculture\n\n**Effects:** +1.1°C average rise, rising seas, extreme weather, melting ice caps, species extinction."
-    },
-    {
-      "triggers": ["what is blockchain", "explain blockchain", "bitcoin blockchain", "cryptocurrency"],
-      "response": "**Blockchain** is a distributed, immutable ledger of transactions.\n\n1. A transaction is broadcast to a network\n2. Nodes validate it via consensus\n3. It forms a **block** added to the **chain** — permanent and transparent\n\n**Properties:** decentralised, immutable, transparent, cryptographically secure\n\n**Uses:** Bitcoin, Ethereum, smart contracts, supply chain tracking."
-    },
-    {
-      "triggers": ["what is machine learning", "explain machine learning", "ml explained", "how does ml work"],
-      "response": "**Machine Learning** is AI that learns patterns from data without explicit programming.\n\n**Three types:**\n1. **Supervised** — trained on labelled data (spam detection)\n2. **Unsupervised** — finds hidden patterns (customer clustering)\n3. **Reinforcement** — learns by trial and reward (game AI)\n\n**Pipeline:** Data → Clean → Train → Evaluate → Deploy\n\nPowers Netflix recommendations, fraud detection, medical imaging, and language models."
-    }
-  ],
-  "unknown": {
-    "responses": [
-      "I don't have a specific answer for that yet. Try asking me about **coding, science, math, history, or writing** — or rephrase your question!",
-      "That's outside what I currently know well. I'm best with programming, science concepts, math, history, and writing tips. Want to try one of those?",
-      "I'm not sure about that one. My knowledge base covers coding, science, math, history, and writing. Could you ask something in those areas?",
-      "Good question — but I don't have enough on that topic yet. Try asking me about JavaScript, Python, physics, biology, history, or writing!"
-    ]
-  }
+  ]
 }
