@@ -9,6 +9,15 @@ const GEMINI_API_KEY = "AIzaSyDGCD-OZ4FHtK5hnzY6huLHny9T_An5mCs";
 const GEMINI_MODEL   = "gemini-2.0-flash";
 const GEMINI_URL     = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
+// ── CORS — allow any origin (needed when index.html is served separately) ──────
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin",  "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
 // ── Middleware ─────────────────────────────────────────────────────────────────
 app.use(express.json({ limit: "4mb" }));
 app.use(express.static(path.join(__dirname, "public")));
