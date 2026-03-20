@@ -5,44 +5,58 @@ const path    = require("path");
 const app     = express();
 const PORT    = process.env.PORT || 3000;
 
-// ── Serper API key (server-side only, never exposed to frontend) ───────────────
+// ── Serper API key (server-side only) ─────────────────────────────────────────
 const SERPER_API_KEY = "5a43cb9dbe3553f4f3586bc34803728c979530de";
 const SERPER_URL     = "https://google.serper.dev/search";
 
+// ── Clean natural language into a clean search query ─────────────────────────
+function toSearchQuery(text) {
+  return text
+    .trim()
+    .replace(/^(hey|hi|hello)\s*/i, "")
+    .replace(/^(can you|could you|please|would you)\s*/i, "")
+    .replace(/^(tell me|show me|give me|find me|search for|look up|what is|what are|who is|who are|how do|how does|i want to know about|i need info on)\s*/i, "")
+    .replace(/^(get me|fetch|find|search)\s*/i, "")
+    .replace(/\?+$/, "")
+    .trim() || text.trim();
+}
+
 // ── Search the web via Serper ──────────────────────────────────────────────────
 async function searchWeb(query) {
+  const searchQuery = toSearchQuery(query);
+  console.log("[Serper] Original:", query);
+  console.log("[Serper] Cleaned query:", searchQuery);
+
   const res = await fetch(SERPER_URL, {
     method:  "POST",
     headers: {
       "X-API-KEY":    SERPER_API_KEY,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ q: query, num: 5 })
+    body: JSON.stringify({ q: searchQuery, num: 5 })
   });
 
   const data = await res.json();
-
-  console.log("[Serper] Query:", query);
   console.log("[Serper] HTTP status:", res.status);
 
   if (!res.ok) {
     console.error("[Serper Error]", JSON.stringify(data));
-    return `Search error: ${data.message || "Unknown error from Serper"}`;
+    return `Search error: ${data.message || "Unknown error"}`;
   }
 
   const parts = [];
 
-  // 1. Answer box — direct answer at the top (best result)
+  // 1. Answer box — direct answer
   if (data.answerBox) {
     const ab = data.answerBox;
-    if (ab.answer)   parts.push(`**${ab.answer}**`);
-    if (ab.snippet)  parts.push(ab.snippet);
+    if (ab.answer)  parts.push(`**${ab.answer}**`);
+    if (ab.snippet) parts.push(ab.snippet);
     if (ab.snippetHighlighted?.length) {
       parts.push(ab.snippetHighlighted.join(" • "));
     }
   }
 
-  // 2. Knowledge graph — rich info panel
+  // 2. Knowledge graph
   if (data.knowledgeGraph) {
     const kg = data.knowledgeGraph;
     let kg_text = `**${kg.title}**`;
@@ -58,8 +72,17 @@ async function searchWeb(query) {
     parts.push(kg_text);
   }
 
-  // 3. Organic results — regular search results
-  if (data.organic && data.organic.length > 0) {
+  // 3. Top news (if query is news-related)
+  if (data.news && data.news.length > 0) {
+    const news = data.news.slice(0, 3).map(n => {
+      const date = n.date ? ` *(${n.date})*` : "";
+      return `**${n.title}**${date}\n${n.snippet || ""}\n[Read more](${n.link})`;
+    });
+    parts.push(news.join("\n\n"));
+  }
+
+  // 4. Organic results
+  if (data.organic && data.organic.length > 0 && parts.length < 2) {
     const results = data.organic.slice(0, 3).map(r => {
       const snippet = r.snippet?.replace(/\n/g, " ").trim() || "";
       return `**${r.title}**\n${snippet}\n[Read more](${r.link})`;
@@ -68,7 +91,7 @@ async function searchWeb(query) {
   }
 
   if (parts.length === 0) {
-    return `I couldn't find any results for **"${query}"**. Try rephrasing your question.`;
+    return `I couldn't find any results for **"${searchQuery}"**. Try rephrasing your question.`;
   }
 
   return parts.join("\n\n");
@@ -124,6 +147,5 @@ app.get("*", (_req, res) => {
 // ── Listen on 0.0.0.0 so Render detects the port ─────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
   console.log("✦ Venaura v1.0 — Serper Search Engine");
-  console.log("  No Google API config needed. Just works.");
   console.log(`  Port: ${PORT}`);
 });
