@@ -5,45 +5,73 @@ const path    = require("path");
 const app     = express();
 const PORT    = process.env.PORT || 3000;
 
-// ── Keys (server-side only) ───────────────────────────────────────────────────
-const GOOGLE_API_KEY    = "AIzaSyBXxA5Hfzg133nyttEqQNCnZsBgGktMA8I";
-const GOOGLE_CX         = "a1a963603bf46435a";
-const GOOGLE_SEARCH_URL = "https://www.googleapis.com/customsearch/v1";
+// ── Serper API key (server-side only, never exposed to frontend) ───────────────
+const SERPER_API_KEY = "5a43cb9dbe3553f4f3586bc34803728c979530de";
+const SERPER_URL     = "https://google.serper.dev/search";
 
-// ── Google Custom Search ───────────────────────────────────────────────────────
+// ── Search the web via Serper ──────────────────────────────────────────────────
 async function searchWeb(query) {
-  const params = new URLSearchParams({
-    key: GOOGLE_API_KEY,
-    cx:  GOOGLE_CX,
-    q:   query,
-    num: "5"
+  const res = await fetch(SERPER_URL, {
+    method:  "POST",
+    headers: {
+      "X-API-KEY":    SERPER_API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ q: query, num: 5 })
   });
 
-  const url = `${GOOGLE_SEARCH_URL}?${params.toString()}`;
-
-  console.log("[Search] Query:", query);
-
-  const res  = await fetch(url);
   const data = await res.json();
 
-  console.log("[Google] HTTP status:", res.status);
-  console.log("[Google] Full response:", JSON.stringify(data));
+  console.log("[Serper] Query:", query);
+  console.log("[Serper] HTTP status:", res.status);
 
-  if (data.error) {
-    console.error("[Google Error]", data.error.message);
-    return `Search error: ${data.error.message}`;
+  if (!res.ok) {
+    console.error("[Serper Error]", JSON.stringify(data));
+    return `Search error: ${data.message || "Unknown error from Serper"}`;
   }
 
-  if (!data.items || data.items.length === 0) {
-    return `I couldn't find any results for **"${query}"**. Try rephrasing.`;
+  const parts = [];
+
+  // 1. Answer box — direct answer at the top (best result)
+  if (data.answerBox) {
+    const ab = data.answerBox;
+    if (ab.answer)   parts.push(`**${ab.answer}**`);
+    if (ab.snippet)  parts.push(ab.snippet);
+    if (ab.snippetHighlighted?.length) {
+      parts.push(ab.snippetHighlighted.join(" • "));
+    }
   }
 
-  const results = data.items.slice(0, 3).map(item => {
-    const snippet = item.snippet.replace(/\n/g, " ").trim();
-    return `**${item.title}**\n${snippet}\n[Read more](${item.link})`;
-  });
+  // 2. Knowledge graph — rich info panel
+  if (data.knowledgeGraph) {
+    const kg = data.knowledgeGraph;
+    let kg_text = `**${kg.title}**`;
+    if (kg.type)        kg_text += ` *(${kg.type})*`;
+    if (kg.description) kg_text += `\n${kg.description}`;
+    if (kg.attributes) {
+      const attrs = Object.entries(kg.attributes)
+        .slice(0, 4)
+        .map(([k, v]) => `• **${k}:** ${v}`)
+        .join("\n");
+      kg_text += `\n${attrs}`;
+    }
+    parts.push(kg_text);
+  }
 
-  return `Here's what I found:\n\n${results.join("\n\n")}`;
+  // 3. Organic results — regular search results
+  if (data.organic && data.organic.length > 0) {
+    const results = data.organic.slice(0, 3).map(r => {
+      const snippet = r.snippet?.replace(/\n/g, " ").trim() || "";
+      return `**${r.title}**\n${snippet}\n[Read more](${r.link})`;
+    });
+    parts.push(results.join("\n\n"));
+  }
+
+  if (parts.length === 0) {
+    return `I couldn't find any results for **"${query}"**. Try rephrasing your question.`;
+  }
+
+  return parts.join("\n\n");
 }
 
 // ── CORS ───────────────────────────────────────────────────────────────────────
@@ -61,7 +89,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ── Health check ───────────────────────────────────────────────────────────────
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", engine: "Venaura v1.0 — Google Search" });
+  res.json({ status: "ok", engine: "Venaura v1.0 — Serper Search" });
 });
 
 // ── POST /api/chat ─────────────────────────────────────────────────────────────
@@ -95,6 +123,7 @@ app.get("*", (_req, res) => {
 
 // ── Listen on 0.0.0.0 so Render detects the port ─────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`✦ Venaura v1.0 — Google Search`);
+  console.log("✦ Venaura v1.0 — Serper Search Engine");
+  console.log("  No Google API config needed. Just works.");
   console.log(`  Port: ${PORT}`);
 });
