@@ -9,14 +9,13 @@ const PORT    = process.env.PORT || 3000;
 const SERPER_API_KEY = "5a43cb9dbe3553f4f3586bc34803728c979530de";
 const SERPER_URL     = "https://google.serper.dev/search";
 
-// ── Clean natural language into a clean search query ─────────────────────────
+// ── Clean natural language into a search query ────────────────────────────────
 function toSearchQuery(text) {
   return text
     .trim()
     .replace(/^(hey|hi|hello)\s*/i, "")
     .replace(/^(can you|could you|please|would you)\s*/i, "")
-    .replace(/^(tell me|show me|give me|find me|search for|look up|what is|what are|who is|who are|how do|how does|i want to know about|i need info on)\s*/i, "")
-    .replace(/^(get me|fetch|find|search)\s*/i, "")
+    .replace(/^(tell me|show me|give me|find me|search for|look up|what is|what are|who is|who are|how do|how does|i want to know about|get me|fetch|find|search)\s*/i, "")
     .replace(/\?+$/, "")
     .trim() || text.trim();
 }
@@ -25,9 +24,9 @@ function toSearchQuery(text) {
 async function searchWeb(query) {
   const searchQuery = toSearchQuery(query);
   console.log("[Serper] Original:", query);
-  console.log("[Serper] Cleaned query:", searchQuery);
+  console.log("[Serper] Cleaned:", searchQuery);
 
-  const res = await fetch(SERPER_URL, {
+  const res  = await fetch(SERPER_URL, {
     method:  "POST",
     headers: {
       "X-API-KEY":    SERPER_API_KEY,
@@ -37,7 +36,7 @@ async function searchWeb(query) {
   });
 
   const data = await res.json();
-  console.log("[Serper] HTTP status:", res.status);
+  console.log("[Serper] Status:", res.status);
 
   if (!res.ok) {
     console.error("[Serper Error]", JSON.stringify(data));
@@ -51,50 +50,40 @@ async function searchWeb(query) {
     const ab = data.answerBox;
     if (ab.answer)  parts.push(`**${ab.answer}**`);
     if (ab.snippet) parts.push(ab.snippet);
-    if (ab.snippetHighlighted?.length) {
-      parts.push(ab.snippetHighlighted.join(" • "));
-    }
+    if (ab.snippetHighlighted?.length) parts.push(ab.snippetHighlighted.join(" • "));
   }
 
   // 2. Knowledge graph
   if (data.knowledgeGraph) {
     const kg = data.knowledgeGraph;
-    let kg_text = `**${kg.title}**`;
-    if (kg.type)        kg_text += ` *(${kg.type})*`;
-    if (kg.description) kg_text += `\n${kg.description}`;
+    let t = `**${kg.title}**`;
+    if (kg.type)        t += ` *(${kg.type})*`;
+    if (kg.description) t += `\n${kg.description}`;
     if (kg.attributes) {
-      const attrs = Object.entries(kg.attributes)
-        .slice(0, 4)
-        .map(([k, v]) => `• **${k}:** ${v}`)
-        .join("\n");
-      kg_text += `\n${attrs}`;
+      t += "\n" + Object.entries(kg.attributes).slice(0, 4).map(([k,v]) => `• **${k}:** ${v}`).join("\n");
     }
-    parts.push(kg_text);
+    parts.push(t);
   }
 
-  // 3. Top news (if query is news-related)
+  // 3. News results
   if (data.news && data.news.length > 0) {
-    const news = data.news.slice(0, 3).map(n => {
-      const date = n.date ? ` *(${n.date})*` : "";
-      return `**${n.title}**${date}\n${n.snippet || ""}\n[Read more](${n.link})`;
-    });
+    const news = data.news.slice(0, 3).map(n =>
+      `**${n.title}**${n.date ? ` *(${n.date})*` : ""}\n${n.snippet || ""}\n[Read more](${n.link})`
+    );
     parts.push(news.join("\n\n"));
   }
 
   // 4. Organic results
   if (data.organic && data.organic.length > 0 && parts.length < 2) {
-    const results = data.organic.slice(0, 3).map(r => {
-      const snippet = r.snippet?.replace(/\n/g, " ").trim() || "";
-      return `**${r.title}**\n${snippet}\n[Read more](${r.link})`;
-    });
-    parts.push(results.join("\n\n"));
+    const organic = data.organic.slice(0, 3).map(r =>
+      `**${r.title}**\n${r.snippet?.replace(/\n/g," ").trim() || ""}\n[Read more](${r.link})`
+    );
+    parts.push(organic.join("\n\n"));
   }
 
-  if (parts.length === 0) {
-    return `I couldn't find any results for **"${searchQuery}"**. Try rephrasing your question.`;
-  }
-
-  return parts.join("\n\n");
+  return parts.length > 0
+    ? parts.join("\n\n")
+    : `I couldn't find results for **"${searchQuery}"**. Try rephrasing.`;
 }
 
 // ── CORS ───────────────────────────────────────────────────────────────────────
@@ -115,7 +104,7 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok", engine: "Venaura v1.0 — Serper Search" });
 });
 
-// ── POST /api/chat ─────────────────────────────────────────────────────────────
+// ── POST /api/chat — only called when web search is ON ────────────────────────
 app.post("/api/chat", async (req, res) => {
   const { messages } = req.body;
 
@@ -128,7 +117,7 @@ app.post("/api/chat", async (req, res) => {
     return res.status(400).json({ error: "Last message must be a user message with text." });
   }
 
-  console.log(`[Chat] User asked: "${last.text}"`);
+  console.log(`[Chat] User searched: "${last.text}"`);
 
   try {
     const reply = await searchWeb(last.text.trim());
@@ -146,6 +135,6 @@ app.get("*", (_req, res) => {
 
 // ── Listen on 0.0.0.0 so Render detects the port ─────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
-  console.log("✦ Venaura v1.0 — Serper Search Engine");
+  console.log("✦ Venaura v1.0 — NLP Chat + Serper Search");
   console.log(`  Port: ${PORT}`);
 });
