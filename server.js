@@ -9,7 +9,7 @@ const PORT    = process.env.PORT || 3000;
 const SERPER_API_KEY = "5a43cb9dbe3553f4f3586bc34803728c979530de";
 const SERPER_URL     = "https://google.serper.dev/search";
 
-const GEMINI_API_KEY = "AIzaSyA2rzFD6K_fKG7CJTcOBBI8z8Y5aZDU-XU";
+const GEMINI_API_KEY = "AIzaSyAo2NEvJsnUcmKI1t0b3A-9FgW605gN2sU";
 const GEMINI_URL     = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 // ── Clean natural language into a search query ────────────────────────────────
