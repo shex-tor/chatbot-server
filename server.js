@@ -5,7 +5,7 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 // ── SECURE: API key lives ONLY on the server ──────────────────────────────────
-const GEMINI_API_KEY = "AIzaSyDGCD-OZ4FHtK5hnzY6huLHny9T_An5mCs";
+const GEMINI_API_KEY = "AIzaSyC_TB5ZV5-2Fp3h1D8fBjnm6tNT9hgxTwg";
 const GEMINI_MODEL   = "gemini-2.0-flash";
 const GEMINI_URL     = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
