@@ -7,32 +7,37 @@ const PORT    = process.env.PORT || 3000;
 
 // ── Keys (server-side only) ───────────────────────────────────────────────────
 const GOOGLE_API_KEY    = "AIzaSyCG5X4B--Gekf8Mj7Ab8VURAqztzrxHxDY";
-const GOOGLE_CX         = "03b7042653d714437";
+const GOOGLE_CX         = "a3350befb25e14f1f";
 const GOOGLE_SEARCH_URL = "https://www.googleapis.com/customsearch/v1";
 
 // ── Google Custom Search ───────────────────────────────────────────────────────
 async function searchWeb(query) {
-  const url = `${GOOGLE_SEARCH_URL}?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&q=${encodeURIComponent(query)}&num=5`;
+  const params = new URLSearchParams({
+    key: GOOGLE_API_KEY,
+    cx:  GOOGLE_CX,
+    q:   query,
+    num: "5"
+  });
+
+  const url = `${GOOGLE_SEARCH_URL}?${params.toString()}`;
+
+  console.log("[Search] Query:", query);
 
   const res  = await fetch(url);
   const data = await res.json();
 
-  // Log full Google response to Render logs for debugging
-  console.log("[Google Response] status:", res.status);
-  console.log("[Google Response] data:", JSON.stringify(data).slice(0, 500));
+  console.log("[Google] HTTP status:", res.status);
+  console.log("[Google] Full response:", JSON.stringify(data));
 
-  // Google returned an API error
   if (data.error) {
     console.error("[Google Error]", data.error.message);
     return `Search error: ${data.error.message}`;
   }
 
-  // No results found
   if (!data.items || data.items.length === 0) {
-    return "I couldn't find any results for that. Try using different keywords.";
+    return `I couldn't find any results for **"${query}"**. Try rephrasing.`;
   }
 
-  // Build clean response from top 3 results
   const results = data.items.slice(0, 3).map(item => {
     const snippet = item.snippet.replace(/\n/g, " ").trim();
     return `**${item.title}**\n${snippet}\n[Read more](${item.link})`;
