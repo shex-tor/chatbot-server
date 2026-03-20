@@ -5,25 +5,9 @@ const path    = require("path");
 const app     = express();
 const PORT    = process.env.PORT || 3000;
 
-// ── Keys (server-side only) ───────────────────────────────────────────────────
+// ── Serper API key (server-side only) ─────────────────────────────────────────
 const SERPER_API_KEY = "5a43cb9dbe3553f4f3586bc34803728c979530de";
 const SERPER_URL     = "https://google.serper.dev/search";
-
-const GEMINI_API_KEY = "AIzaSyA2rzFD6K_fKG7CJTcOBBI8z8Y5aZDU-XU";
-const GEMINI_URL     = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-// ── Venaura system personality ────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are Venaura, a smart and friendly AI assistant (v1.0). 
-When given web search results, you must:
-1. Read and understand the results carefully
-2. Write a natural, conversational response in your own words
-3. Summarise and explain the key information clearly
-4. Add helpful context or your own perspective where relevant
-5. Keep responses concise but informative
-6. Use markdown formatting (bold, lists) where it helps clarity
-7. At the end, mention 1-2 sources if relevant
-
-Never just copy-paste the raw results. Always respond as a knowledgeable, friendly assistant who has read the results and is explaining them to the user.`;
 
 // ── Clean natural language into a search query ────────────────────────────────
 function toSearchQuery(text) {
@@ -36,8 +20,77 @@ function toSearchQuery(text) {
     .trim() || text.trim();
 }
 
-// ── Step 1: Fetch raw search results from Serper ─────────────────────────────
-async function fetchSearchResults(query) {
+// ── Format raw Serper results into a clean natural response ───────────────────
+function formatResults(query, data) {
+  const parts = [];
+
+  // 1. Direct answer box
+  if (data.answerBox) {
+    const ab = data.answerBox;
+    const answer = ab.answer || ab.snippet || "";
+    if (answer) {
+      parts.push(`Here's what I found about **${query}**:\n\n${answer}`);
+      if (ab.snippetHighlighted?.length) {
+        parts.push(ab.snippetHighlighted.join(" • "));
+      }
+    }
+  }
+
+  // 2. Knowledge graph — rich summary
+  if (data.knowledgeGraph) {
+    const kg = data.knowledgeGraph;
+    let summary = "";
+    if (kg.title)       summary += `**${kg.title}**`;
+    if (kg.type)        summary += ` *(${kg.type})*`;
+    if (kg.description) summary += `\n\n${kg.description}`;
+    if (kg.attributes && Object.keys(kg.attributes).length > 0) {
+      const attrs = Object.entries(kg.attributes)
+        .slice(0, 5)
+        .map(([k, v]) => `- **${k}:** ${v}`)
+        .join("\n");
+      summary += `\n\n${attrs}`;
+    }
+    if (summary) parts.push(summary);
+  }
+
+  // 3. News results
+  if (data.news && data.news.length > 0) {
+    const intro = parts.length === 0
+      ? `Here are the latest results for **${query}**:\n\n`
+      : "\n\n**Latest news:**\n\n";
+    const news = data.news.slice(0, 3).map(n => {
+      const date = n.date ? ` *(${n.date})*` : "";
+      const snippet = n.snippet ? `\n${n.snippet}` : "";
+      return `**${n.title}**${date}${snippet}\n[Read more](${n.link})`;
+    });
+    parts.push(intro + news.join("\n\n"));
+  }
+
+  // 4. Organic results — only if nothing better found
+  if (parts.length === 0 && data.organic && data.organic.length > 0) {
+    const intro = `Here's what I found for **${query}**:\n\n`;
+    const results = data.organic.slice(0, 3).map(r => {
+      const snippet = r.snippet?.replace(/\n/g, " ").trim() || "";
+      return `**${r.title}**\n${snippet}\n[Read more](${r.link})`;
+    });
+    parts.push(intro + results.join("\n\n"));
+  }
+
+  // 5. Related searches hint
+  if (data.relatedSearches && data.relatedSearches.length > 0 && parts.length > 0) {
+    const related = data.relatedSearches.slice(0, 3).map(r => `*${r.query}*`).join(", ");
+    parts.push(`\n**Related:** ${related}`);
+  }
+
+  if (parts.length === 0) {
+    return `I searched for **"${query}"** but couldn't find relevant results. Try rephrasing your question.`;
+  }
+
+  return parts.join("\n\n");
+}
+
+// ── Search the web via Serper ──────────────────────────────────────────────────
+async function searchWeb(query) {
   const searchQuery = toSearchQuery(query);
   console.log("[Serper] Query:", searchQuery);
 
@@ -48,103 +101,14 @@ async function fetchSearchResults(query) {
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(`Serper error: ${data.message || res.status}`);
+  console.log("[Serper] Status:", res.status);
 
-  // Extract all useful text from results
-  const context = [];
-
-  if (data.answerBox) {
-    const ab = data.answerBox;
-    if (ab.answer)  context.push(`Direct answer: ${ab.answer}`);
-    if (ab.snippet) context.push(`Answer detail: ${ab.snippet}`);
+  if (!res.ok) {
+    console.error("[Serper Error]", JSON.stringify(data));
+    return `Search error: ${data.message || "Unknown error"}`;
   }
 
-  if (data.knowledgeGraph) {
-    const kg = data.knowledgeGraph;
-    if (kg.title)       context.push(`Topic: ${kg.title}${kg.type ? ` (${kg.type})` : ""}`);
-    if (kg.description) context.push(`Description: ${kg.description}`);
-    if (kg.attributes) {
-      Object.entries(kg.attributes).slice(0, 5).forEach(([k, v]) => {
-        context.push(`${k}: ${v}`);
-      });
-    }
-  }
-
-  if (data.news && data.news.length > 0) {
-    data.news.slice(0, 4).forEach(n => {
-      context.push(`News: "${n.title}"${n.date ? ` (${n.date})` : ""} — ${n.snippet || ""} [${n.link}]`);
-    });
-  }
-
-  if (data.organic && data.organic.length > 0) {
-    data.organic.slice(0, 4).forEach(r => {
-      context.push(`Result: "${r.title}" — ${r.snippet?.replace(/\n/g, " ") || ""} [${r.link}]`);
-    });
-  }
-
-  return { searchQuery, context };
-}
-
-// ── Step 2: Send results to Gemini to compose a natural response ──────────────
-async function composeResponse(userQuery, context) {
-  const contextText = context.length > 0
-    ? context.join("\n")
-    : "No relevant search results were found.";
-
-  const prompt = `The user asked: "${userQuery}"
-
-Here are the web search results I found:
-${contextText}
-
-Based on these results, write a helpful, natural response to the user's question. Respond as Venaura — a friendly, knowledgeable AI assistant.`;
-
-  const res = await fetch(GEMINI_URL, {
-    method:  "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 1024 }
-    })
-  });
-
-  const data = await res.json();
-  console.log("[Gemini] Status:", res.status);
-
-  if (data.error) throw new Error(data.error.message);
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text || "I found some results but couldn't compose a response.";
-}
-
-// ── Step 3: Full search + compose pipeline ────────────────────────────────────
-async function searchAndRespond(query) {
-  const { searchQuery, context } = await fetchSearchResults(query);
-  const reply = await composeResponse(query, context);
-  return reply;
-}
-
-// ── Gemini Vision — analyse images and documents ──────────────────────────────
-async function analyseWithVision(prompt, files) {
-  console.log("[Vision] Analysing", files.length, "file(s).");
-
-  const parts = [];
-  files.forEach(f => {
-    parts.push({ inline_data: { mime_type: f.mediaType, data: f.base64 } });
-  });
-  parts.push({ text: prompt || "Describe what you see in this file in detail." });
-
-  const res  = await fetch(GEMINI_URL, {
-    method:  "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-      contents: [{ role: "user", parts }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
-    })
-  });
-
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.message);
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from vision model.";
+  return formatResults(searchQuery, data);
 }
 
 // ── CORS ───────────────────────────────────────────────────────────────────────
@@ -162,7 +126,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ── Health check ───────────────────────────────────────────────────────────────
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", engine: "Venaura v1.0 — Serper + Gemini" });
+  res.json({ status: "ok", engine: "Venaura v1.0 — Serper + Brain" });
 });
 
 // ── POST /api/chat ─────────────────────────────────────────────────────────────
@@ -170,16 +134,27 @@ app.post("/api/chat", async (req, res) => {
   const { messages, mode, prompt, files } = req.body;
 
   try {
-    // ── Vision mode ──────────────────────────────────────────────────────────
+    // ── Vision mode — file analysis (brain-based description) ────────────────
     if (mode === "vision") {
       if (!files || files.length === 0) {
         return res.status(400).json({ error: "No files provided." });
       }
-      const reply = await analyseWithVision(prompt || "", files);
+      // Without Gemini, we describe what was received
+      const fileList = files.map(f => {
+        const isImage = f.mediaType?.startsWith("image/");
+        return isImage
+          ? `an image file (${f.name || "image"})`
+          : `a document file (${f.name || "file"})`;
+      }).join(" and ");
+
+      const reply = prompt
+        ? `I received ${fileList}. Unfortunately, file analysis requires the Vision API which is currently unavailable. You can describe the file contents and I'll help you with your question: **"${prompt}"**`
+        : `I received ${fileList}. File analysis requires the Vision API which is currently unavailable. Please describe what's in the file and I'll help you!`;
+
       return res.json({ reply });
     }
 
-    // ── Search + Gemini compose mode ─────────────────────────────────────────
+    // ── Search mode ───────────────────────────────────────────────────────────
     if (!Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ error: "'messages' array is required." });
     }
@@ -190,7 +165,7 @@ app.post("/api/chat", async (req, res) => {
     }
 
     console.log(`[Chat] User asked: "${last.text}"`);
-    const reply = await searchAndRespond(last.text.trim());
+    const reply = await searchWeb(last.text.trim());
     return res.json({ reply });
 
   } catch (err) {
@@ -206,6 +181,6 @@ app.get("*", (_req, res) => {
 
 // ── Listen on 0.0.0.0 so Render detects the port ─────────────────────────────
 app.listen(PORT, "0.0.0.0", () => {
-  console.log("✦ Venaura v1.0 — Serper + Gemini AI Responses");
+  console.log("✦ Venaura v1.0 — Serper + Brain");
   console.log(`  Port: ${PORT}`);
 });
