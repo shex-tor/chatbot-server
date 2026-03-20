@@ -11,7 +11,7 @@ function normalise(text) {
     .trim();
 }
 
-// ── Tokenise into words ────────────────────────────────────────────────────────
+// ── Tokenise ───────────────────────────────────────────────────────────────────
 function tokenise(text) {
   return normalise(text).split(" ").filter(w => w.length > 0);
 }
@@ -29,11 +29,41 @@ function meaningful(tokens) {
   return tokens.filter(t => !STOPWORDS.has(t) && t.length > 1);
 }
 
-// ── Pre-process all intents AFTER normalise is defined ────────────────────────
+// ── Pre-process intents (AFTER normalise is defined) ──────────────────────────
 const intents = knowledge.intents.map(intent => ({
   ...intent,
   normPatterns: intent.patterns.map(p => normalise(p))
 }));
+
+// ── Tags that are purely conversational ───────────────────────────────────────
+const CONVERSATIONAL_TAGS = new Set([
+  "greeting", "farewell", "howareyou", "userfeeling_good", "userfeeling_bad",
+  "whoami", "capabilities", "thanks", "age", "creator", "compliment", "insult",
+  "joke", "yes", "no", "agree", "disagree", "apology", "repeat",
+  "bored", "thinking", "motivation", "happiness", "love", "friendship"
+]);
+
+// ── Patterns that always trigger Google search ────────────────────────────────
+// If message starts with or contains these → always search web
+const SEARCH_TRIGGERS = [
+  /^what is\b/,  /^what are\b/, /^what was\b/, /^what were\b/,
+  /^who is\b/,   /^who was\b/,  /^who are\b(?! you)/,  /^who were\b/,
+  /^where is\b/, /^where are\b/,/^where was\b/,
+  /^when is\b/,  /^when was\b/, /^when did\b/,
+  /^why is\b/,   /^why are\b/,  /^why did\b/,  /^why does\b/,
+  /^how does\b/, /^how do\b/,   /^how did\b/,  /^how much\b/, /^how many\b/,
+  /^explain\b/,  /^define\b/,   /^describe\b/,
+  /^tell me about\b/, /^give me info\b/, /^search\b/,
+  /\bweather\b/, /\bnews\b/,    /\bprice\b/,   /\bcost\b/,
+  /\bcapital\b/, /\bpopulation\b/, /\bhistory of\b/, /\blatest\b/,
+  /\bcurrent\b/, /\btoday\b/,
+  /\bwhat time\b/,   /\bright now\b/
+];
+
+function forcesSearch(text) {
+  const norm = normalise(text);
+  return SEARCH_TRIGGERS.some(pattern => pattern.test(norm));
+}
 
 // ── Pick a random response ─────────────────────────────────────────────────────
 function pick(arr) {
@@ -93,6 +123,23 @@ const FALLBACKS = [
   "I want to make sure I understand you properly — could you say more?"
 ];
 
+// ── isConversational: true = use brain, false = use Google ────────────────────
+function isConversational(userMessage) {
+  // If it matches a search trigger pattern → always Google
+  if (forcesSearch(userMessage)) return false;
+
+  const norm   = normalise(userMessage);
+  const tokens = tokenise(norm);
+
+  const scored = intents
+    .map(intent => ({ intent, score: scoreIntent(tokens, norm, intent) }))
+    .filter(x => x.score >= 40)
+    .sort((a, b) => b.score - a.score);
+
+  // Only conversational if top match is a known conversational tag
+  return scored.length > 0 && CONVERSATIONAL_TAGS.has(scored[0].intent.tag);
+}
+
 // ── Main respond function ──────────────────────────────────────────────────────
 function respond(userMessage, sessionId) {
   const sid    = sessionId || "default";
@@ -123,4 +170,4 @@ function respond(userMessage, sessionId) {
   return response;
 }
 
-module.exports = { respond };
+module.exports = { respond, isConversational };
