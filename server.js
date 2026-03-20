@@ -9,7 +9,7 @@ const GEMINI_API_KEY = "AIzaSyDGCD-OZ4FHtK5hnzY6huLHny9T_An5mCs";
 const GEMINI_MODEL   = "gemini-2.0-flash";
 const GEMINI_URL     = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
-// ── CORS — allow any origin (needed when index.html is served separately) ──────
+// ── CORS — allow any origin ────────────────────────────────────────────────────
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin",  "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -22,6 +22,9 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: "4mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// ── Health check (Render pings this to confirm the server is up) ───────────────
+app.get("/health", (req, res) => res.status(200).send("OK"));
+
 // ── POST /api/chat ─────────────────────────────────────────────────────────────
 app.post("/api/chat", async (req, res) => {
   const { messages } = req.body;
@@ -30,7 +33,6 @@ app.post("/api/chat", async (req, res) => {
     return res.status(400).json({ error: "Invalid request: 'messages' array required." });
   }
 
-  // Map our simple {role, text} history to Gemini's contents format
   const contents = messages.map((m) => ({
     role: m.role === "assistant" ? "model" : "user",
     parts: [{ text: String(m.text) }],
@@ -96,8 +98,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// ── Start ──────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n✦ Venaura v1.0 is running`);
-  console.log(`  → http://localhost:${PORT}\n`);
+// ── Start — MUST bind to 0.0.0.0 for Render to detect the port ────────────────
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✦ Venaura v1.0 running on port ${PORT}`);
 });
