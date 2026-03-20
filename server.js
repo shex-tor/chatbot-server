@@ -2,7 +2,7 @@
 
 const express      = require("express");
 const path         = require("path");
-const { respond }  = require("./engine/brain");
+const { respond }  = require("./brain");
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
