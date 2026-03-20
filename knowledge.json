@@ -1,223 +1,222 @@
 {
   "greeting": [
-    { "triggers": ["hello", "hi", "hey", "howdy", "sup", "what's up", "whats up", "good morning", "good afternoon", "good evening"], "response": "Hey there! I'm Venaura, your AI assistant. What can I help you with today?" },
-    { "triggers": ["how are you", "how are you doing", "how do you do", "you okay", "you good"], "response": "I'm running great, thanks for asking! I'm here and ready to help. What's on your mind?" },
-    { "triggers": ["who are you", "what are you", "tell me about yourself", "introduce yourself"], "response": "I'm **Venaura v1.0** — a self-contained AI assistant built from scratch. I don't rely on any external API. I use a rule-based retrieval engine with a built-in knowledge base to answer your questions. Ask me about coding, science, math, history, writing, and more!" },
-    { "triggers": ["what can you do", "what do you know", "your capabilities", "help me", "what are your features"], "response": "Here's what I can help with:\n\n- **Coding** — explain concepts, write snippets, debug logic\n- **Science** — physics, chemistry, biology, astronomy\n- **Math** — arithmetic, algebra, geometry, explanations\n- **History** — world events, people, civilisations\n- **Writing** — drafting emails, essays, creative pieces\n- **General knowledge** — facts, definitions, explanations\n- **Advice** — productivity, learning, problem solving\n\nJust ask away!" }
+    {
+      "triggers": ["hello", "hi", "hey", "howdy", "sup", "whats up", "what's up", "good morning", "good afternoon", "good evening"],
+      "response": "Hey there! I'm **Venaura**, your AI assistant. What can I help you with today?"
+    },
+    {
+      "triggers": ["how are you", "how are you doing", "you okay", "you good", "how do you do"],
+      "response": "I'm running great, thanks for asking! Ready to help. What's on your mind?"
+    },
+    {
+      "triggers": ["who are you", "who made you", "what are you", "tell me about yourself", "introduce yourself", "what is venaura"],
+      "response": "I'm **Venaura v1.0** — a self-contained AI assistant built by the AuraenAI platforms. I use a built-in knowledge to answer your questions.\n\nAsk me about **coding, science, math, history, writing**, and more!"
+    },
+    {
+      "triggers": ["what can you do", "your capabilities", "what do you know", "help", "what are your features"],
+      "response": "Here's what I can help with:\n\n- **Coding** — JavaScript, Python, HTML, CSS, Node.js, Git, APIs\n- **Science** — physics, biology, chemistry, astronomy\n- **Math** — arithmetic, algebra, geometry, and I can calculate expressions\n- **History** — world events, famous people, civilisations\n- **Writing** — emails, essays, tips\n- **General knowledge** — AI, internet, climate, blockchain, and more\n\nJust ask!"
+    }
   ],
-
   "farewell": [
-    { "triggers": ["bye", "goodbye", "see you", "see ya", "later", "take care", "good night", "goodnight", "cya"], "response": "Goodbye! Feel free to come back anytime. Take care! 👋" },
-    { "triggers": ["thanks", "thank you", "thank you so much", "cheers", "appreciate it", "ty"], "response": "You're welcome! Happy to help. Let me know if there's anything else you need." }
+    {
+      "triggers": ["bye", "goodbye", "see you", "see ya", "later", "take care", "good night", "goodnight", "cya"],
+      "response": "Goodbye! Come back anytime. Take care! 👋"
+    },
+    {
+      "triggers": ["thanks", "thank you", "thank you so much", "cheers", "appreciate it", "ty", "thx"],
+      "response": "You're welcome! Happy to help. Let me know if there's anything else you need."
+    }
   ],
-
   "coding": [
     {
-      "triggers": ["what is javascript", "explain javascript", "javascript language", "js language"],
-      "response": "**JavaScript** is a high-level, interpreted programming language primarily used to make web pages interactive.\n\n**Key facts:**\n- Created by Brendan Eich in 1995 in just 10 days\n- Runs in every web browser natively\n- Now also runs on servers via Node.js\n- Dynamically typed — you don't declare variable types\n- Supports object-oriented, functional, and event-driven styles\n\n**Example:**\n```javascript\nconst greet = (name) => {\n  return `Hello, ${name}!`;\n};\nconsole.log(greet('Venaura')); // Hello, Venaura!\n```"
+      "triggers": ["what is javascript", "explain javascript", "javascript language", "js language", "what is js"],
+      "response": "**JavaScript** is a high-level, interpreted programming language used to make web pages interactive.\n\n**Key facts:**\n- Created by Brendan Eich in 1995\n- Runs natively in every web browser\n- Also runs on servers via Node.js\n- Dynamically typed and supports multiple paradigms\n\n**Example:**\n```js\nconst greet = (name) => `Hello, ${name}!`;\nconsole.log(greet('Venaura')); // Hello, Venaura!\n```"
     },
     {
       "triggers": ["what is python", "explain python", "python language", "python programming"],
-      "response": "**Python** is a high-level, readable, general-purpose programming language.\n\n**Key facts:**\n- Created by Guido van Rossum, released in 1991\n- Known for clean, readable syntax\n- Huge ecosystem: web (Django/Flask), data science (NumPy/Pandas), AI (TensorFlow/PyTorch)\n- Interpreted and dynamically typed\n\n**Example:**\n```python\ndef greet(name):\n    return f'Hello, {name}!'\n\nprint(greet('Venaura'))  # Hello, Venaura!\n```"
+      "response": "**Python** is a high-level, readable, general-purpose programming language.\n\n**Key facts:**\n- Created by Guido van Rossum, released 1991\n- Famous for clean, readable syntax\n- Used in web (Django/Flask), data science, and AI\n\n**Example:**\n```python\ndef greet(name):\n    return f'Hello, {name}!'\n\nprint(greet('Venaura'))  # Hello, Venaura!\n```"
     },
     {
-      "triggers": ["what is a variable", "explain variable", "variables in programming", "what are variables"],
-      "response": "A **variable** is a named container that stores a value in memory.\n\n```javascript\n// JavaScript\nlet age = 25;\nconst name = 'Alice';\nvar score = 100;\n```\n\n```python\n# Python\nage = 25\nname = 'Alice'\n```\n\n**Types of variables:**\n- `let` — block-scoped, can be reassigned (JS)\n- `const` — block-scoped, cannot be reassigned (JS)\n- `var` — function-scoped, old style (JS)\n\nVariables hold numbers, strings, booleans, arrays, objects, and more."
+      "triggers": ["what is a variable", "explain variable", "variables in programming"],
+      "response": "A **variable** is a named container that stores a value in memory.\n\n```js\nlet age = 25;\nconst name = 'Alice';\n```\n\n```python\nage = 25\nname = 'Alice'\n```\n\n- `let` — can be reassigned\n- `const` — cannot be reassigned\n- `var` — old style, function-scoped"
     },
     {
-      "triggers": ["what is a function", "explain function", "functions in programming", "what are functions"],
-      "response": "A **function** is a reusable block of code that performs a specific task.\n\n```javascript\n// JavaScript function\nfunction add(a, b) {\n  return a + b;\n}\nconsole.log(add(3, 4)); // 7\n\n// Arrow function\nconst multiply = (a, b) => a * b;\n```\n\n```python\n# Python function\ndef add(a, b):\n    return a + b\n\nprint(add(3, 4))  # 7\n```\n\n**Why use functions?**\n- Avoid repeating code (DRY principle)\n- Make code easier to read and test\n- Break complex problems into small pieces"
+      "triggers": ["what is a function", "explain function", "functions in programming"],
+      "response": "A **function** is a reusable block of code that performs a specific task.\n\n```js\nfunction add(a, b) {\n  return a + b;\n}\nconsole.log(add(3, 4)); // 7\n```\n\n```python\ndef add(a, b):\n    return a + b\nprint(add(3, 4))  # 7\n```\n\nFunctions keep your code DRY (Don't Repeat Yourself)."
     },
     {
       "triggers": ["what is a loop", "explain loop", "for loop", "while loop", "loops in programming"],
-      "response": "A **loop** repeats a block of code multiple times.\n\n**For loop** — when you know how many times:\n```javascript\nfor (let i = 0; i < 5; i++) {\n  console.log(i); // 0, 1, 2, 3, 4\n}\n```\n\n**While loop** — when you loop until a condition is false:\n```javascript\nlet i = 0;\nwhile (i < 5) {\n  console.log(i);\n  i++;\n}\n```\n\n**forEach** — loop over arrays:\n```javascript\n['a', 'b', 'c'].forEach(item => console.log(item));\n```"
+      "response": "A **loop** repeats code multiple times.\n\n```js\n// For loop\nfor (let i = 0; i < 5; i++) {\n  console.log(i); // 0 1 2 3 4\n}\n\n// While loop\nlet i = 0;\nwhile (i < 5) { console.log(i); i++; }\n```"
     },
     {
-      "triggers": ["what is an array", "explain array", "arrays in programming", "what are arrays"],
-      "response": "An **array** is an ordered list of values stored in a single variable.\n\n```javascript\n// JavaScript\nconst fruits = ['apple', 'banana', 'mango'];\nconsole.log(fruits[0]); // apple\nconsole.log(fruits.length); // 3\n\n// Common methods\nfruits.push('grape');      // add to end\nfruits.pop();              // remove from end\nfruits.map(f => f.toUpperCase()); // transform each item\nfruits.filter(f => f.length > 5); // keep items matching condition\n```\n\nArrays can hold any data type — numbers, strings, objects, even other arrays."
-    },
-    {
-      "triggers": ["what is an object", "explain object", "objects in javascript", "javascript objects"],
-      "response": "An **object** is a collection of key-value pairs used to represent real-world entities.\n\n```javascript\nconst person = {\n  name: 'Alice',\n  age: 30,\n  isStudent: false,\n  greet() {\n    return `Hi, I'm ${this.name}`;\n  }\n};\n\nconsole.log(person.name);    // Alice\nconsole.log(person['age']);  // 30\nconsole.log(person.greet()); // Hi, I'm Alice\n```\n\nObjects are the foundation of JavaScript — almost everything is an object."
+      "triggers": ["what is an array", "explain array", "arrays in programming"],
+      "response": "An **array** is an ordered list of values.\n\n```js\nconst fruits = ['apple', 'banana', 'mango'];\nconsole.log(fruits[0]); // apple\nfruits.push('grape');   // add item\nfruits.pop();           // remove last\nfruits.map(f => f.toUpperCase()); // transform\nfruits.filter(f => f.length > 5); // filter\n```"
     },
     {
       "triggers": ["what is html", "explain html", "html language", "what does html stand for"],
-      "response": "**HTML** (HyperText Markup Language) is the standard language for creating web pages.\n\n**Basic structure:**\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>My Page</title>\n</head>\n<body>\n  <h1>Hello World</h1>\n  <p>This is a paragraph.</p>\n  <a href=\"https://example.com\">A link</a>\n  <img src=\"image.jpg\" alt=\"An image\">\n</body>\n</html>\n```\n\nHTML defines the **structure** of a page. CSS styles it, JavaScript makes it interactive."
+      "response": "**HTML** (HyperText Markup Language) is the standard language for building web pages.\n\n```html\n<!DOCTYPE html>\n<html>\n<head><title>My Page</title></head>\n<body>\n  <h1>Hello World</h1>\n  <p>A paragraph.</p>\n  <a href=\"https://example.com\">A link</a>\n</body>\n</html>\n```\n\nHTML defines **structure**. CSS styles it. JavaScript makes it interactive."
     },
     {
       "triggers": ["what is css", "explain css", "css styling", "what does css stand for"],
-      "response": "**CSS** (Cascading Style Sheets) controls the visual appearance of HTML elements.\n\n```css\n/* Select and style elements */\nbody {\n  font-family: sans-serif;\n  background: #f0f0f0;\n}\n\nh1 {\n  color: #1a73e8;\n  font-size: 2rem;\n}\n\n.card {\n  background: white;\n  border-radius: 12px;\n  padding: 20px;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n}\n```\n\n**Key concepts:** selectors, the box model, flexbox, grid, media queries, animations."
+      "response": "**CSS** (Cascading Style Sheets) controls the visual appearance of HTML.\n\n```css\nbody { font-family: sans-serif; background: #f0f0f0; }\nh1   { color: #1a73e8; font-size: 2rem; }\n.card {\n  background: white;\n  border-radius: 12px;\n  padding: 20px;\n}\n```\n\nKey concepts: selectors, box model, flexbox, grid, media queries."
     },
     {
-      "triggers": ["what is node", "what is nodejs", "explain node.js", "node js"],
-      "response": "**Node.js** is a JavaScript runtime that lets you run JavaScript outside the browser — on a server.\n\n**Key facts:**\n- Built on Chrome's V8 engine\n- Non-blocking, event-driven architecture — great for APIs\n- Package manager: npm (millions of packages)\n- Used by Netflix, LinkedIn, Uber\n\n**Simple HTTP server:**\n```javascript\nconst http = require('http');\n\nconst server = http.createServer((req, res) => {\n  res.end('Hello from Node.js!');\n});\n\nserver.listen(3000, () => console.log('Running on port 3000'));\n```"
+      "triggers": ["what is nodejs", "what is node", "explain nodejs", "node js"],
+      "response": "**Node.js** lets you run JavaScript on the server (outside the browser).\n\n- Built on Chrome's V8 engine\n- Non-blocking, event-driven — great for APIs\n- Package manager: npm\n\n```js\nconst http = require('http');\nconst server = http.createServer((req, res) => {\n  res.end('Hello from Node.js!');\n});\nserver.listen(3000);\n```"
     },
     {
       "triggers": ["what is express", "explain express", "express js", "express framework"],
-      "response": "**Express.js** is a minimal, fast web framework for Node.js.\n\n```javascript\nconst express = require('express');\nconst app = express();\n\napp.use(express.json());\n\napp.get('/', (req, res) => {\n  res.send('Hello World!');\n});\n\napp.post('/api/data', (req, res) => {\n  const { name } = req.body;\n  res.json({ message: `Hello, ${name}` });\n});\n\napp.listen(3000, () => console.log('Server running'));\n```\n\nExpress handles routing, middleware, request/response, and is the most popular Node.js framework."
+      "response": "**Express.js** is a minimal web framework for Node.js.\n\n```js\nconst express = require('express');\nconst app = express();\n\napp.get('/', (req, res) => res.send('Hello!'));\n\napp.post('/api/data', (req, res) => {\n  res.json({ message: 'Received' });\n});\n\napp.listen(3000, '0.0.0.0');\n```\n\nExpress handles routing, middleware, and HTTP requests/responses."
     },
     {
       "triggers": ["what is git", "explain git", "git version control", "what is version control"],
-      "response": "**Git** is a distributed version control system that tracks changes in your code.\n\n**Essential commands:**\n```bash\ngit init              # Start a new repo\ngit clone <url>       # Copy a remote repo\ngit status            # See changed files\ngit add .             # Stage all changes\ngit commit -m 'msg'   # Save a snapshot\ngit push              # Upload to remote\ngit pull              # Download latest changes\ngit branch feature    # Create a new branch\ngit checkout feature  # Switch to branch\ngit merge feature     # Merge branch into current\n```\n\nGit is essential for collaboration and keeping your code history safe."
+      "response": "**Git** is a version control system that tracks changes in your code.\n\n```bash\ngit init           # start repo\ngit clone <url>    # copy remote repo\ngit add .          # stage changes\ngit commit -m 'msg' # save snapshot\ngit push           # upload to remote\ngit pull           # get latest changes\ngit branch feature # create branch\ngit merge feature  # merge branch\n```"
     },
     {
       "triggers": ["what is an api", "explain api", "what does api stand for", "how does api work"],
-      "response": "**API** (Application Programming Interface) is a way for two applications to communicate.\n\nThink of it as a **waiter in a restaurant**: you (client) tell the waiter (API) what you want, the waiter goes to the kitchen (server), and brings back your food (response).\n\n**REST API example:**\n```javascript\n// Fetching data from an API\nconst response = await fetch('https://api.example.com/users');\nconst users = await response.json();\nconsole.log(users);\n```\n\n**HTTP Methods:**\n- `GET` — read data\n- `POST` — create data\n- `PUT/PATCH` — update data\n- `DELETE` — remove data"
+      "response": "An **API** (Application Programming Interface) lets two applications communicate.\n\nThink of it as a waiter: you (client) order, the waiter (API) goes to the kitchen (server), and returns your food (response).\n\n```js\nconst res = await fetch('https://api.example.com/users');\nconst users = await res.json();\n```\n\n**HTTP Methods:** GET (read), POST (create), PUT (update), DELETE (remove)"
     },
     {
       "triggers": ["what is recursion", "explain recursion", "recursive function"],
-      "response": "**Recursion** is when a function calls itself to solve a smaller version of the same problem.\n\n```javascript\n// Factorial: 5! = 5 × 4 × 3 × 2 × 1 = 120\nfunction factorial(n) {\n  if (n <= 1) return 1;        // base case — stops recursion\n  return n * factorial(n - 1); // recursive call\n}\n\nconsole.log(factorial(5)); // 120\n```\n\n**Every recursive function needs:**\n1. A **base case** — the stopping condition\n2. A **recursive case** — calling itself with a smaller input\n\nWithout a base case, you get infinite recursion and a stack overflow error."
+      "response": "**Recursion** is when a function calls itself to solve a smaller version of the same problem.\n\n```js\nfunction factorial(n) {\n  if (n <= 1) return 1;         // base case\n  return n * factorial(n - 1);  // recursive call\n}\nconsole.log(factorial(5)); // 120\n```\n\nEvery recursive function needs:\n1. A **base case** (stops recursion)\n2. A **recursive case** (calls itself with smaller input)"
     },
     {
-      "triggers": ["what is oop", "object oriented programming", "explain oop", "classes in programming"],
-      "response": "**OOP (Object-Oriented Programming)** organises code around objects and classes.\n\n```javascript\nclass Animal {\n  constructor(name, sound) {\n    this.name = name;\n    this.sound = sound;\n  }\n\n  speak() {\n    return `${this.name} says ${this.sound}`;\n  }\n}\n\nclass Dog extends Animal {\n  constructor(name) {\n    super(name, 'Woof');\n  }\n\n  fetch() {\n    return `${this.name} fetches the ball!`;\n  }\n}\n\nconst dog = new Dog('Rex');\nconsole.log(dog.speak());  // Rex says Woof\nconsole.log(dog.fetch()); // Rex fetches the ball!\n```\n\n**4 pillars:** Encapsulation, Inheritance, Polymorphism, Abstraction."
+      "triggers": ["what is async await", "explain async await", "asynchronous javascript", "promises javascript", "async javascript"],
+      "response": "**Async/Await** handles asynchronous operations cleanly in JavaScript.\n\n```js\nasync function getData() {\n  try {\n    const res  = await fetch('/api/data');\n    const data = await res.json();\n    console.log(data);\n  } catch (err) {\n    console.error(err);\n  }\n}\n```\n\n`await` pauses until the Promise resolves. The function must be marked `async`."
     },
     {
-      "triggers": ["what is async await", "explain async await", "asynchronous javascript", "promises javascript"],
-      "response": "**Async/Await** is JavaScript's way of handling asynchronous operations cleanly.\n\n```javascript\n// Without async/await (callback hell)\nfetch('/api/data')\n  .then(res => res.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));\n\n// With async/await (clean & readable)\nasync function getData() {\n  try {\n    const res = await fetch('/api/data');\n    const data = await res.json();\n    console.log(data);\n  } catch (err) {\n    console.error(err);\n  }\n}\n```\n\n`await` pauses execution until the Promise resolves. The function must be marked `async`."
+      "triggers": ["what is oop", "object oriented programming", "explain oop", "classes in programming", "what is a class"],
+      "response": "**OOP (Object-Oriented Programming)** organises code around objects and classes.\n\n```js\nclass Animal {\n  constructor(name, sound) {\n    this.name = name;\n    this.sound = sound;\n  }\n  speak() { return `${this.name} says ${this.sound}`; }\n}\n\nclass Dog extends Animal {\n  constructor(name) { super(name, 'Woof'); }\n}\n\nconst dog = new Dog('Rex');\nconsole.log(dog.speak()); // Rex says Woof\n```\n\n**4 pillars:** Encapsulation, Inheritance, Polymorphism, Abstraction."
     }
   ],
-
   "science": [
     {
-      "triggers": ["what is gravity", "explain gravity", "how does gravity work", "what is gravitational force"],
-      "response": "**Gravity** is a fundamental force of nature that attracts objects with mass toward each other.\n\n**Key facts:**\n- Described by Newton's law: F = G(m₁m₂)/r²\n- Einstein refined it with General Relativity — gravity is the **curvature of spacetime** caused by mass\n- The Earth's gravitational acceleration: **9.8 m/s²**\n- Keeps planets in orbit, holds atmospheres, causes tides\n- The weakest of the four fundamental forces, but acts over infinite distances\n\nWithout gravity, the universe as we know it — galaxies, stars, planets, and life — couldn't exist."
+      "triggers": ["what is gravity", "explain gravity", "how does gravity work", "gravitational force"],
+      "response": "**Gravity** is a fundamental force that attracts objects with mass toward each other.\n\n- Newton's law: **F = G(m₁m₂)/r²**\n- Einstein: gravity is the **curvature of spacetime** caused by mass\n- Earth's gravitational acceleration: **9.8 m/s²**\n- Keeps planets in orbit, causes tides, holds atmospheres\n- Weakest of the four fundamental forces but acts over infinite distance"
     },
     {
       "triggers": ["what is photosynthesis", "explain photosynthesis", "how do plants make food"],
-      "response": "**Photosynthesis** is the process plants use to convert sunlight into food.\n\n**The equation:**\n> 6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂\n\nIn plain English: carbon dioxide + water + sunlight → glucose + oxygen\n\n**Where it happens:** chloroplasts (contain green chlorophyll)\n\n**Two stages:**\n1. **Light reactions** — capture sunlight, split water, produce ATP\n2. **Calvin cycle** — use ATP to build glucose from CO₂\n\nPhotosynthesis is the foundation of almost all life on Earth — it produces the oxygen we breathe and the food chains we depend on."
+      "response": "**Photosynthesis** converts sunlight into food for plants.\n\n> **6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂**\n\n(carbon dioxide + water + sunlight → glucose + oxygen)\n\n**Where:** chloroplasts, using chlorophyll\n\n**Two stages:**\n1. Light reactions — capture sunlight, produce ATP\n2. Calvin cycle — use ATP to build glucose from CO₂"
     },
     {
       "triggers": ["what is dna", "explain dna", "what does dna stand for", "how does dna work"],
-      "response": "**DNA** (Deoxyribonucleic Acid) is the molecule that carries the genetic instructions for life.\n\n**Structure:**\n- Double helix — two strands twisted together\n- Made of nucleotides: Adenine (A), Thymine (T), Guanine (G), Cytosine (C)\n- A pairs with T; G pairs with C\n- In humans: ~3 billion base pairs, 46 chromosomes\n\n**Function:**\n- Encodes instructions for building proteins\n- Copied and passed from parent to child\n- Mutations in DNA can cause disease or drive evolution\n\nDNA is often called the 'blueprint of life'."
+      "response": "**DNA** (Deoxyribonucleic Acid) carries the genetic instructions for life.\n\n- Double helix structure — two twisted strands\n- Made of 4 bases: **A, T, G, C** (A pairs with T; G pairs with C)\n- Humans have ~3 billion base pairs across 46 chromosomes\n- Encodes instructions for building proteins\n- Mutations drive evolution and can cause disease"
     },
     {
-      "triggers": ["what is the speed of light", "speed of light", "how fast is light", "light speed"],
-      "response": "The **speed of light in a vacuum** is **299,792,458 metres per second** (~300,000 km/s or 186,000 miles/s).\n\n**Key facts:**\n- Denoted as **c** in physics\n- Nothing with mass can reach or exceed it\n- Light from the Sun takes ~8 minutes 20 seconds to reach Earth\n- Light from the nearest star (Proxima Centauri) takes 4.24 years\n- The basis of Einstein's special relativity: E = mc²\n\nThe speed of light is the universal speed limit — it defines the structure of space and time."
+      "triggers": ["speed of light", "what is the speed of light", "how fast is light", "light speed"],
+      "response": "The speed of light in a vacuum is **299,792,458 m/s** (~300,000 km/s).\n\n- Denoted as **c**\n- Nothing with mass can reach or exceed it\n- Sunlight takes ~8 min 20 sec to reach Earth\n- Nearest star light takes 4.24 years\n- Foundation of Einstein's **E = mc²**"
     },
     {
-      "triggers": ["what is the water cycle", "explain water cycle", "how does rain form", "evaporation condensation"],
-      "response": "The **water cycle** (hydrological cycle) describes how water continuously moves through Earth's systems.\n\n**Stages:**\n1. **Evaporation** — heat from the Sun turns liquid water into water vapour\n2. **Transpiration** — plants release water vapour\n3. **Condensation** — vapour rises, cools, forms clouds (water droplets)\n4. **Precipitation** — water falls as rain, snow, sleet, or hail\n5. **Collection** — water gathers in oceans, lakes, rivers, groundwater\n6. **Runoff** — flows back to bodies of water, cycle repeats\n\nThe water cycle regulates climate, distributes fresh water, and supports all life."
+      "triggers": ["what is the water cycle", "explain water cycle", "how does rain form"],
+      "response": "The **water cycle** describes how water continuously moves through Earth's systems.\n\n1. **Evaporation** — Sun turns water into vapour\n2. **Condensation** — vapour rises, cools, forms clouds\n3. **Precipitation** — falls as rain, snow, hail\n4. **Collection** — gathers in oceans, lakes, rivers\n5. **Runoff** — flows back, cycle repeats"
     },
     {
-      "triggers": ["what is evolution", "explain evolution", "darwin evolution", "natural selection"],
-      "response": "**Evolution** is the gradual change in inherited traits of populations over generations.\n\n**Charles Darwin's mechanism — Natural Selection:**\n1. Organisms vary in traits\n2. Some traits improve survival and reproduction\n3. Those organisms pass on their traits more\n4. Over time, the population changes\n\n**Evidence for evolution:**\n- Fossil record\n- DNA similarities between species\n- Observable evolution in bacteria, insects\n- Comparative anatomy (similar bone structures across species)\n\nEvolution explains the diversity of all life on Earth from common ancestors over ~3.8 billion years."
+      "triggers": ["what is evolution", "explain evolution", "natural selection", "darwin evolution"],
+      "response": "**Evolution** is the gradual change in inherited traits of populations over generations.\n\n**Darwin's Natural Selection:**\n1. Organisms vary in traits\n2. Some traits improve survival/reproduction\n3. Those traits get passed on more\n4. Population changes over time\n\n**Evidence:** fossil record, DNA similarities, observable evolution in bacteria, comparative anatomy."
     },
     {
-      "triggers": ["what is electricity", "explain electricity", "how does electricity work", "what is electric current"],
-      "response": "**Electricity** is the flow of electric charge (electrons) through a conductor.\n\n**Key concepts:**\n- **Current (I)** — rate of charge flow, measured in Amperes (A)\n- **Voltage (V)** — electrical pressure that drives current, measured in Volts (V)\n- **Resistance (R)** — opposition to current flow, measured in Ohms (Ω)\n- **Ohm's Law:** V = I × R\n\n**Types:**\n- **DC (Direct Current)** — flows one direction (batteries)\n- **AC (Alternating Current)** — reverses direction (mains power, 50/60Hz)\n\nElectricity powers essentially all modern technology."
+      "triggers": ["what is electricity", "explain electricity", "electric current", "how does electricity work"],
+      "response": "**Electricity** is the flow of electric charge (electrons) through a conductor.\n\n- **Current (I)** — rate of flow, Amperes (A)\n- **Voltage (V)** — pressure driving current, Volts (V)\n- **Resistance (R)** — opposition to flow, Ohms (Ω)\n- **Ohm's Law: V = I × R**\n- **DC** — one direction (batteries)\n- **AC** — alternating direction (mains power)"
     },
     {
-      "triggers": ["what is the big bang", "explain big bang", "big bang theory", "origin of universe"],
-      "response": "The **Big Bang Theory** is the prevailing cosmological model for the origin of the universe.\n\n**What happened:**\n- ~13.8 billion years ago, the universe began from an extremely hot, dense singularity\n- It expanded rapidly — not an explosion *in* space, but an expansion *of* space itself\n- First particles formed within seconds\n- First atoms (hydrogen, helium) formed after ~380,000 years\n- First stars formed after ~200 million years\n\n**Evidence:**\n- Cosmic Microwave Background radiation\n- Expansion of the universe (redshift)\n- Abundance of hydrogen and helium\n\nThe Big Bang doesn't describe what came *before* — that remains one of science's open questions."
+      "triggers": ["what is the big bang", "big bang theory", "origin of universe", "explain big bang"],
+      "response": "The **Big Bang** is the prevailing model for the origin of the universe.\n\n- ~13.8 billion years ago the universe began from an extremely hot, dense singularity\n- Space itself expanded (not an explosion *in* space)\n- First atoms formed after ~380,000 years\n- First stars formed after ~200 million years\n\n**Evidence:** Cosmic Microwave Background, universe expansion (redshift), hydrogen/helium abundance."
     }
   ],
-
   "math": [
     {
-      "triggers": ["what is pythagoras theorem", "pythagorean theorem", "pythagoras", "a squared b squared"],
-      "response": "The **Pythagorean Theorem** states that in a right-angled triangle:\n\n> **a² + b² = c²**\n\nWhere `c` is the hypotenuse (longest side, opposite the right angle), and `a` and `b` are the other two sides.\n\n**Example:**\nIf a = 3, b = 4, then:\nc² = 3² + 4² = 9 + 16 = 25\nc = √25 = **5**\n\nThis is called a **3-4-5 Pythagorean triple** — one of many such integer sets.\n\n**Uses:** architecture, navigation, physics, computer graphics, GPS."
+      "triggers": ["pythagorean theorem", "pythagoras theorem", "pythagoras", "a squared b squared c squared"],
+      "response": "The **Pythagorean Theorem:** in a right-angled triangle:\n\n> **a² + b² = c²**\n\n`c` = hypotenuse (longest side), `a` and `b` = other sides.\n\n**Example:** a=3, b=4 → c² = 9+16 = 25 → c = **5**\n\nUsed in architecture, navigation, physics, and computer graphics."
     },
     {
       "triggers": ["what is pi", "explain pi", "value of pi", "what is 3.14"],
-      "response": "**Pi (π)** is the ratio of a circle's circumference to its diameter.\n\n> π = C / d ≈ **3.14159265358979...**\n\n**Key facts:**\n- Irrational — cannot be expressed as a simple fraction\n- Transcendental — not a root of any polynomial equation\n- Infinite non-repeating decimal\n- Known to over **100 trillion digits**\n\n**Used in:**\n- Circle area: A = πr²\n- Circumference: C = 2πr\n- Volume of sphere: V = (4/3)πr³\n- Trigonometry, waves, signal processing, quantum mechanics"
+      "response": "**Pi (π)** is the ratio of a circle's circumference to its diameter.\n\n> π ≈ **3.14159265358979...**\n\n- Irrational — can't be written as a simple fraction\n- Infinite non-repeating decimal\n- **Circle area:** A = πr²\n- **Circumference:** C = 2πr\n- **Sphere volume:** V = (4/3)πr³"
     },
     {
       "triggers": ["what is algebra", "explain algebra", "algebra basics", "what are equations"],
-      "response": "**Algebra** is a branch of mathematics that uses symbols (variables) to represent unknown values.\n\n**Core ideas:**\n- **Variable** — a letter representing an unknown: x, y, n\n- **Expression** — a combination of variables and numbers: 3x + 5\n- **Equation** — an expression with an equals sign: 3x + 5 = 14\n\n**Solving an equation:**\n```\n3x + 5 = 14\n3x = 14 - 5\n3x = 9\nx = 3\n```\n\n**Why algebra matters:** it's the foundation of calculus, physics, economics, engineering, and computer science."
+      "response": "**Algebra** uses symbols (variables) to represent unknown values.\n\n- **Variable:** a letter for an unknown — x, y, n\n- **Expression:** 3x + 5\n- **Equation:** 3x + 5 = 14\n\n**Solving:**\n```\n3x + 5 = 14\n3x = 9\nx = 3\n```\n\nFoundation of calculus, physics, engineering, and computer science."
     },
     {
-      "triggers": ["what is a prime number", "explain prime numbers", "prime numbers", "what makes a number prime"],
-      "response": "A **prime number** is a whole number greater than 1 that has exactly two factors: 1 and itself.\n\n**First 20 primes:**\n2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71\n\n**Key facts:**\n- 2 is the only even prime\n- There are infinitely many primes (proved by Euclid ~300 BC)\n- Very large primes are used in **cryptography** (RSA encryption)\n- Testing if a number is prime gets computationally hard for very large numbers\n\n**Not prime (composite):** 4 (2×2), 6 (2×3), 9 (3×3), 15 (3×5)"
+      "triggers": ["what is a prime number", "prime numbers", "explain prime numbers"],
+      "response": "A **prime number** is greater than 1 and divisible only by 1 and itself.\n\n**First 10 primes:** 2, 3, 5, 7, 11, 13, 17, 19, 23, 29\n\n- 2 is the only even prime\n- There are infinitely many primes\n- Large primes power **RSA encryption** (internet security)"
     },
     {
-      "triggers": ["what is percentage", "explain percentage", "how to calculate percentage", "percent"],
-      "response": "A **percentage** is a number expressed as a fraction of 100.\n\n**Key formulas:**\n\n1. **What is X% of Y?**\n   = (X / 100) × Y\n   *Example: 20% of 150 = (20/100) × 150 = **30***\n\n2. **X is what % of Y?**\n   = (X / Y) × 100\n   *Example: 30 is what % of 150? = (30/150) × 100 = **20%***\n\n3. **Percentage increase/decrease:**\n   = ((New - Old) / Old) × 100\n   *Example: price goes from 200 to 250 = (50/200) × 100 = **25% increase***"
+      "triggers": ["what is percentage", "how to calculate percentage", "explain percentage", "percent"],
+      "response": "A **percentage** is a number out of 100.\n\n- **X% of Y** = (X ÷ 100) × Y → *20% of 150 = 30*\n- **X is what % of Y** = (X ÷ Y) × 100 → *30 of 150 = 20%*\n- **% change** = ((New − Old) ÷ Old) × 100 → *200→250 = 25% increase*"
     },
     {
-      "triggers": ["what is calculus", "explain calculus", "derivatives calculus", "integrals calculus"],
-      "response": "**Calculus** is the mathematics of continuous change.\n\nIt has two main branches:\n\n**1. Differential Calculus — derivatives**\n- Measures the rate of change (slope of a curve at a point)\n- d/dx(x²) = 2x\n- Used in physics (velocity, acceleration), optimisation\n\n**2. Integral Calculus — integrals**\n- Measures accumulation (area under a curve)\n- ∫x² dx = x³/3 + C\n- Used in calculating areas, volumes, probabilities\n\n**The Fundamental Theorem of Calculus** connects derivatives and integrals — differentiation and integration are inverse operations.\n\nNewton and Leibniz independently invented calculus in the 17th century."
+      "triggers": ["what is calculus", "explain calculus", "derivatives", "integrals"],
+      "response": "**Calculus** is the mathematics of continuous change.\n\n**Differential calculus (derivatives):**\n- Rate of change / slope\n- d/dx(x²) = 2x\n\n**Integral calculus (integrals):**\n- Area under a curve / accumulation\n- ∫x² dx = x³/3 + C\n\nInvented independently by Newton and Leibniz in the 17th century."
     }
   ],
-
   "history": [
     {
       "triggers": ["who was albert einstein", "albert einstein", "einstein physicist"],
-      "response": "**Albert Einstein** (1879–1955) was a German-born theoretical physicist, widely regarded as one of the greatest scientists of all time.\n\n**Major contributions:**\n- **Special Relativity (1905)** — E = mc², time dilation, length contraction\n- **General Relativity (1915)** — gravity as curvature of spacetime\n- **Photoelectric effect** — proved light comes in quanta (photons), won him the **1921 Nobel Prize in Physics**\n- Explained Brownian motion, contributed to quantum theory\n\n**Personal:**\n- Failed his first university entrance exam\n- Worked as a patent clerk while developing his theories\n- Fled Nazi Germany in 1933, moved to the USA\n- His brain was preserved after death for scientific study"
+      "response": "**Albert Einstein** (1879–1955) was a German-born theoretical physicist.\n\n**Contributions:**\n- **Special Relativity (1905):** E = mc², time dilation\n- **General Relativity (1915):** gravity as spacetime curvature\n- **Photoelectric effect:** won him the **1921 Nobel Prize**\n\nHe worked as a patent clerk while developing his greatest theories."
     },
     {
       "triggers": ["what was world war 2", "world war ii", "ww2", "second world war"],
-      "response": "**World War II** (1939–1945) was the deadliest conflict in human history.\n\n**Key facts:**\n- **Cause:** German aggression under Hitler, expansion of Nazi Germany; Japan's imperialism in Asia\n- **Allied Powers:** UK, USA, USSR, France, China and others\n- **Axis Powers:** Germany, Italy, Japan\n- **Start:** Germany invaded Poland on 1 September 1939\n- **End:** Germany surrendered May 1945; Japan surrendered September 1945 after atomic bombings of Hiroshima and Nagasaki\n\n**Scale:**\n- ~70–85 million deaths (military and civilian)\n- Holocaust: systematic murder of 6 million Jews and millions of others\n- Led to the creation of the United Nations in 1945"
+      "response": "**World War II** (1939–1945) was the deadliest conflict in history.\n\n- **Allies:** UK, USA, USSR, France vs **Axis:** Germany, Italy, Japan\n- Started when Germany invaded Poland (Sept 1, 1939)\n- Ended May 1945 (Europe) and Sept 1945 (Pacific)\n- ~70–85 million deaths total\n- Holocaust: 6 million Jews systematically murdered\n- Led to the creation of the United Nations"
     },
     {
-      "triggers": ["who was nelson mandela", "nelson mandela", "mandela south africa"],
-      "response": "**Nelson Mandela** (1918–2013) was a South African anti-apartheid leader who became the country's first Black president.\n\n**Life highlights:**\n- Born in Mvezo, South Africa\n- Joined the African National Congress (ANC) in 1944\n- Led peaceful and armed resistance against apartheid\n- Imprisoned for 27 years (1964–1990) on Robben Island\n- Released by President F.W. de Klerk in 1990\n- Won the **Nobel Peace Prize in 1993** (shared with de Klerk)\n- Became South Africa's **first democratically elected president** (1994–1999)\n- Advocated reconciliation, not revenge\n\nMandela is a global symbol of justice, equality, and resilience."
+      "triggers": ["who was nelson mandela", "nelson mandela", "mandela"],
+      "response": "**Nelson Mandela** (1918–2013) was South Africa's first Black president.\n\n- Led the ANC in anti-apartheid resistance\n- Imprisoned for **27 years** on Robben Island\n- Released 1990, won the **Nobel Peace Prize 1993**\n- President of South Africa 1994–1999\n- Symbol of justice, equality, and reconciliation worldwide"
     },
     {
-      "triggers": ["what was the cold war", "cold war", "usa vs ussr", "soviet union usa conflict"],
-      "response": "The **Cold War** (1947–1991) was a geopolitical tension between the **USA** and the **Soviet Union (USSR)** after World War II.\n\n**Why 'cold'?** — No direct military conflict between the two superpowers.\n\n**Key events:**\n- Berlin Wall built (1961) and fell (1989)\n- Korean War (1950–53)\n- Cuban Missile Crisis (1962) — closest point to nuclear war\n- Vietnam War (1955–75)\n- Space Race — Sputnik (1957), Moon landing (1969)\n- Arms race — thousands of nuclear weapons built\n\n**End:** The USSR dissolved on 25 December 1991, leaving the USA as the sole superpower."
+      "triggers": ["what was the cold war", "cold war", "usa vs ussr"],
+      "response": "The **Cold War** (1947–1991) was a geopolitical rivalry between the **USA** and **USSR**.\n\n- No direct military conflict between the two superpowers\n- **Key events:** Berlin Wall (1961/1989), Cuban Missile Crisis (1962), Vietnam War, Space Race\n- Arms race produced thousands of nuclear weapons\n- Ended when the USSR dissolved December 25, 1991"
     }
   ],
-
   "writing": [
     {
       "triggers": ["write a professional email", "help me write an email", "professional email template", "email template"],
-      "response": "Here's a clean **professional email template:**\n\n---\n\n**Subject:** [Clear, specific subject line]\n\nDear [Name / Mr. / Ms. Last Name],\n\nI hope this message finds you well.\n\nI am writing to [state your purpose clearly in one sentence].\n\n[Body paragraph — provide context or details. Keep it concise, 2–4 sentences.]\n\n[Optional: Any action you need from them, or what you will do next.]\n\nPlease don't hesitate to reach out if you have any questions.\n\nKind regards,\n[Your Full Name]\n[Your Title / Company]\n[Email | Phone]\n\n---\n\n**Tips:**\n- Subject lines should be specific: *'Q3 Report Review — Action Required by Friday'*\n- Keep the body under 150 words when possible\n- One clear ask per email"
+      "response": "**Professional Email Template:**\n\n---\n**Subject:** [Specific subject line]\n\nDear [Name],\n\nI hope this message finds you well.\n\nI am writing to [state purpose clearly].\n\n[2–3 sentences of context or details.]\n\n[State any required action or next steps.]\n\nKind regards,\n[Your Name | Title | Contact]\n\n---\n**Tips:** Keep it under 150 words. One clear ask per email."
     },
     {
       "triggers": ["how to write an essay", "essay structure", "essay writing tips", "essay format"],
-      "response": "**Essay Structure — The Classic 5-Paragraph Model:**\n\n**1. Introduction**\n- Hook: an interesting fact, question, or statement\n- Background: brief context\n- Thesis: your main argument (1 clear sentence)\n\n**2–4. Body Paragraphs** (one idea each)\n- Topic sentence: state the point\n- Evidence: facts, examples, quotes\n- Analysis: explain how it supports your thesis\n- Transition: link to the next paragraph\n\n**5. Conclusion**\n- Restate thesis (differently)\n- Summarise key points\n- Closing thought: broader implication or call to action\n\n**Tips:**\n- Write your introduction *last* — it's easier once you've written the body\n- Each paragraph = one idea only\n- Show, don't tell — use specific examples\n- Read it aloud to catch awkward phrasing"
+      "response": "**Essay Structure:**\n\n1. **Introduction** — hook, background, thesis statement\n2. **Body paragraph 1** — topic sentence, evidence, analysis\n3. **Body paragraph 2** — topic sentence, evidence, analysis\n4. **Body paragraph 3** — topic sentence, evidence, analysis\n5. **Conclusion** — restate thesis, summarise, closing thought\n\n**Tips:**\n- Write your intro *last*\n- One idea per paragraph\n- Use specific examples, not vague claims\n- Read it aloud to catch errors"
     },
     {
       "triggers": ["how to improve writing", "writing tips", "better writing", "improve my writing"],
-      "response": "**10 tips to improve your writing:**\n\n1. **Read widely** — absorb good writing styles naturally\n2. **Write every day** — even 10 minutes builds the habit\n3. **Be specific** — say 'a red 1967 Mustang' not 'a nice car'\n4. **Cut filler words** — remove 'very', 'really', 'basically', 'just'\n5. **Use active voice** — 'The dog bit the man' not 'The man was bitten by the dog'\n6. **Short sentences** — they are more powerful than long, complex ones\n7. **One idea per paragraph** — don't overload the reader\n8. **Edit ruthlessly** — first drafts are always rough\n9. **Read aloud** — you'll immediately hear what sounds off\n10. **Get feedback** — fresh eyes catch what you miss\n\n*'The first draft of anything is garbage.' — Ernest Hemingway*"
+      "response": "**10 writing tips:**\n\n1. Read widely — absorb good styles\n2. Write daily — even 10 minutes\n3. Be specific — details over generalities\n4. Cut filler — remove 'very', 'really', 'just', 'basically'\n5. Use active voice — *'She wrote the report'* not *'The report was written'*\n6. Short sentences — they hit harder\n7. One idea per paragraph\n8. Edit ruthlessly — first drafts are rough\n9. Read aloud — you'll hear what's wrong\n10. Get feedback — fresh eyes catch everything"
     }
   ],
-
   "general": [
     {
       "triggers": ["what is artificial intelligence", "explain ai", "what is ai", "artificial intelligence"],
-      "response": "**Artificial Intelligence (AI)** is the simulation of human intelligence by computer systems.\n\n**Main types:**\n- **Narrow AI** — designed for one task (Siri, chess engines, image recognition) — *this is all that currently exists*\n- **General AI (AGI)** — human-level intelligence across all tasks — *not yet achieved*\n- **Super AI** — exceeds human intelligence in all areas — *theoretical*\n\n**Key branches:**\n- **Machine Learning** — systems that learn from data\n- **Deep Learning** — neural networks with many layers\n- **NLP** — understanding and generating language\n- **Computer Vision** — interpreting images and video\n\n**Real-world applications:** recommendation systems, medical diagnosis, self-driving cars, fraud detection, and chatbots like me!"
+      "response": "**Artificial Intelligence (AI)** is the simulation of human intelligence by computers.\n\n**Types:**\n- **Narrow AI** — one task (Siri, chess engines) — *exists today*\n- **General AI (AGI)** — human-level across all tasks — *not yet achieved*\n\n**Key branches:** Machine Learning, Deep Learning, NLP, Computer Vision\n\n**Uses:** recommendations, medical diagnosis, fraud detection, self-driving cars, chatbots."
     },
     {
-      "triggers": ["what is the internet", "explain the internet", "how does internet work", "internet explanation"],
-      "response": "The **Internet** is a global network of interconnected computers that communicate using standardised protocols.\n\n**How it works:**\n1. Your device connects to an **ISP** (Internet Service Provider)\n2. Data is broken into **packets** and sent across networks\n3. **Routers** direct packets along the fastest path\n4. Packets are reassembled at the destination\n5. **TCP/IP** is the fundamental protocol suite that makes this work\n\n**Key technologies:**\n- **DNS** — translates domain names to IP addresses (like a phone book)\n- **HTTP/HTTPS** — protocol for web pages\n- **HTML/CSS/JS** — languages that build web pages\n- **Fibre optic cables** — carry most internet traffic at nearly light speed (including undersea cables)\n\nThe internet was originally ARPANET, a US military project from 1969."
+      "triggers": ["what is the internet", "explain the internet", "how does internet work"],
+      "response": "The **Internet** is a global network of computers communicating via standardised protocols.\n\n1. Your device connects to an **ISP**\n2. Data is broken into **packets** and routed across networks\n3. **TCP/IP** governs how packets travel and reassemble\n4. **DNS** translates domain names to IP addresses\n5. **HTTP/HTTPS** delivers web pages\n\nOriginated as ARPANET, a US military project in 1969."
     },
     {
-      "triggers": ["how to be productive", "productivity tips", "how to focus", "stay focused", "time management"],
-      "response": "**Proven productivity strategies:**\n\n**Structure your time:**\n- **Pomodoro Technique** — 25 min focused work, 5 min break, repeat\n- **Time blocking** — schedule specific tasks in specific time slots\n- **Eat the frog** — do your hardest task first thing in the morning\n\n**Eliminate distractions:**\n- Phone in another room (or grayscale mode)\n- Use website blockers (Freedom, Cold Turkey)\n- One tab, one task\n\n**Work smarter:**\n- Write tomorrow's top 3 tasks tonight\n- Batch similar tasks together\n- Say no to low-priority requests\n\n**Recharge:**\n- Sleep 7–9 hours — it's not optional, it's performance\n- Exercise improves focus by 20–30%\n- Take real breaks — a walk beats scrolling your phone\n\n*You don't need more hours. You need fewer distractions.*"
+      "triggers": ["how to be productive", "productivity tips", "time management", "how to focus", "stay focused"],
+      "response": "**Proven productivity strategies:**\n\n- **Pomodoro** — 25 min focus, 5 min break\n- **Time blocking** — schedule tasks in specific slots\n- **Eat the frog** — do the hardest thing first\n- Phone away or on grayscale\n- Write tomorrow's top 3 tasks tonight\n- Sleep 7–9 hours — it's not optional\n- Exercise improves focus by 20–30%\n\n*You don't need more hours. You need fewer distractions.*"
     },
     {
-      "triggers": ["how to learn programming", "learn to code", "start coding", "programming for beginners"],
-      "response": "**How to learn programming from scratch:**\n\n**Step 1: Pick one language and stick to it**\nFor beginners: **Python** (readable, versatile) or **JavaScript** (runs in browser, immediate results)\n\n**Step 2: Learn the fundamentals**\nVariables → Data types → Conditionals → Loops → Functions → Arrays/Objects\n\n**Step 3: Free resources**\n- freeCodeCamp.org\n- The Odin Project (web dev)\n- CS50 by Harvard (free on edX)\n- Python.org official tutorial\n\n**Step 4: Build projects immediately**\nDon't just follow tutorials. Build:\n- A calculator\n- A to-do list\n- A weather app\n- Something you actually want\n\n**Step 5: Get unstuck faster**\n- Read error messages carefully\n- Google the exact error message\n- Break problems into smaller pieces\n\n*Consistency beats intensity. 1 hour daily beats 8 hours on weekends.*"
+      "triggers": ["how to learn programming", "learn to code", "start coding", "programming for beginners", "learn coding"],
+      "response": "**How to learn programming:**\n\n1. **Pick one language** — Python (readable) or JavaScript (instant browser results)\n2. **Learn fundamentals** — variables, loops, functions, arrays\n3. **Free resources** — freeCodeCamp, The Odin Project, CS50 (Harvard)\n4. **Build projects** — calculator, to-do list, weather app\n5. **Read error messages** — they tell you exactly what's wrong\n\n*1 hour daily beats 8 hours on weekends. Consistency is everything.*"
     },
     {
       "triggers": ["what is climate change", "global warming", "explain climate change", "greenhouse effect"],
-      "response": "**Climate change** refers to long-term shifts in global temperatures and weather patterns.\n\n**Natural vs Human-caused:**\nWhile climate has always changed naturally, since the Industrial Revolution (1850s), **human activities are the dominant cause**.\n\n**The greenhouse effect:**\n1. Sun heats Earth's surface\n2. Earth emits infrared radiation\n3. Greenhouse gases (CO₂, methane, water vapour) trap this heat\n4. More gases = more heat trapped = global warming\n\n**Main human causes:**\n- Burning fossil fuels (coal, oil, gas)\n- Deforestation\n- Agriculture and livestock\n- Industrial processes\n\n**Observed effects:**\n- Global average temperature up ~1.1°C since pre-industrial levels\n- Rising sea levels\n- More extreme weather events\n- Ice caps and glaciers melting\n- Species extinction"
+      "response": "**Climate change** refers to long-term shifts in global temperatures caused primarily by human activity since the Industrial Revolution.\n\n**The greenhouse effect:**\nSun heats Earth → Earth emits heat → CO₂/methane trap it → planet warms\n\n**Main causes:** burning fossil fuels, deforestation, agriculture\n\n**Effects:** +1.1°C average rise, rising seas, extreme weather, melting ice caps, species extinction."
     },
     {
-      "triggers": ["what is blockchain", "explain blockchain", "bitcoin blockchain", "cryptocurrency blockchain"],
-      "response": "**Blockchain** is a distributed, immutable ledger that records transactions across many computers.\n\n**How it works:**\n1. A transaction is requested\n2. It's broadcast to a network of computers (nodes)\n3. Nodes validate the transaction using consensus algorithms\n4. The transaction is combined with others to form a **block**\n5. The block is added to the **chain** — permanently and transparently\n6. Transaction complete\n\n**Key properties:**\n- **Decentralised** — no single authority controls it\n- **Immutable** — records cannot be altered\n- **Transparent** — anyone can verify transactions\n- **Secure** — cryptographically linked blocks\n\n**Uses:** Cryptocurrency (Bitcoin, Ethereum), supply chain tracking, smart contracts, digital identity, voting systems."
+      "triggers": ["what is blockchain", "explain blockchain", "bitcoin blockchain", "cryptocurrency"],
+      "response": "**Blockchain** is a distributed, immutable ledger of transactions.\n\n1. A transaction is broadcast to a network\n2. Nodes validate it via consensus\n3. It forms a **block** added to the **chain** — permanent and transparent\n\n**Properties:** decentralised, immutable, transparent, cryptographically secure\n\n**Uses:** Bitcoin, Ethereum, smart contracts, supply chain tracking."
     },
     {
       "triggers": ["what is machine learning", "explain machine learning", "ml explained", "how does ml work"],
-      "response": "**Machine Learning (ML)** is a type of AI where systems learn patterns from data without being explicitly programmed.\n\n**Three main types:**\n\n1. **Supervised Learning** — trained on labelled data\n   - Input: email → Output: spam/not spam\n   - Algorithms: linear regression, decision trees, neural networks\n\n2. **Unsupervised Learning** — finds hidden patterns in unlabelled data\n   - Customer segmentation, anomaly detection\n   - Algorithms: k-means clustering, autoencoders\n\n3. **Reinforcement Learning** — learns by trial and error with rewards\n   - How AlphaGo and game-playing AI works\n\n**The ML pipeline:**\nData collection → Cleaning → Feature engineering → Model training → Evaluation → Deployment\n\nML powers recommendations (Netflix, Spotify), fraud detection, medical imaging, and language models."
+      "response": "**Machine Learning** is AI that learns patterns from data without explicit programming.\n\n**Three types:**\n1. **Supervised** — trained on labelled data (spam detection)\n2. **Unsupervised** — finds hidden patterns (customer clustering)\n3. **Reinforcement** — learns by trial and reward (game AI)\n\n**Pipeline:** Data → Clean → Train → Evaluate → Deploy\n\nPowers Netflix recommendations, fraud detection, medical imaging, and language models."
     }
   ],
-
-  "math_compute": [
-    {
-      "triggers": ["calculate", "what is", "compute", "solve", "equals", "plus", "minus", "times", "divided by", "multiplied by", "squared", "square root"],
-      "response": "__COMPUTE__"
-    }
-  ],
-
   "unknown": {
     "responses": [
-      "That's an interesting question! I don't have a specific answer for that in my knowledge base yet. Could you try rephrasing, or ask me about coding, science, math, history, or writing?",
-      "I'm not sure about that one yet. My knowledge base is growing! Try asking me about programming, science concepts, math, or historical events.",
-      "Hmm, I don't have enough information on that topic right now. Feel free to ask me about JavaScript, Python, physics, biology, history, or writing tips!",
-      "Good question — but that's outside what I currently know well. I'm best with coding, science, math, history, and writing. Want to try one of those?"
+      "I don't have a specific answer for that yet. Try asking me about **coding, science, math, history, or writing** — or rephrase your question!",
+      "That's outside what I currently know well. I'm best with programming, science concepts, math, history, and writing tips. Want to try one of those?",
+      "I'm not sure about that one. My knowledge base covers coding, science, math, history, and writing. Could you ask something in those areas?",
+      "Good question — but I don't have enough on that topic yet. Try asking me about JavaScript, Python, physics, biology, history, or writing!"
     ]
   }
 }
